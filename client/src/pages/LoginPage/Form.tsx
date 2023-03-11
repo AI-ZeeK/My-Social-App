@@ -64,11 +64,11 @@ const Form = () => {
 			// for (let value in values) {
 			// 	formData.append(value, values[value]);
 			// }
-			formData.append("picturePath", values.picture.name);
+			// formData.append("picturePath", values.picture.name);
 			console.log(x, values, "new vererer", formData);
 
 			const savedUserResponse = await fetch(
-				"http://localhost:5000/auth/register",
+				"https://my-social-app-gqkj.onrender.com/auth/register",
 				{
 					method: "POST",
 					body: x,
@@ -88,7 +88,7 @@ const Form = () => {
 	};
 	const login = async (values: any, onSubmitProps: any) => {
 		// this
-		const loggedInResponse = await fetch("http://localhost:5000/auth/login", {
+		const loggedInResponse = await fetch("https://my-social-app-gqkj.onrender.com/auth/login", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(values),
@@ -111,29 +111,33 @@ const Form = () => {
 		if (isLogin) return await login(values, onSubmitProps);
 		if (isRegister) return await register(values, onSubmitProps);
 	};
-	const handleSubmit = async () => {
+	const handleSubmit = async (e: MouseEvent) => {
+		e.preventDefault()
 		console.log("screen", isLogin, isRegister);
+		if (isRegister) return await register(values);
+
 	};
 	const handleChange = (e: any) => {
 		setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-		console.log(formData);
 	};
+	const handleBlur = false 
+	const setFieldValue = true
 
 	return (
-		<Formik
-			onSubmit={handleFormSubmit}
-			initialValues={isLogin ? initialValuesLogin : initialValuesRegister}
-			validationSchema={isLogin ? loginSchema : registerSchema}>
-			{({
-				// values,
-				errors,
-				touched,
-				handleBlur,
-				// handleChange,
-				handleSubmit,
-				setFieldValue,
-				resetForm,
-			}) => (
+		// <Formik
+		// 	onSubmit={handleFormSubmit}
+		// 	initialValues={isLogin ? initialValuesLogin : initialValuesRegister}
+		// 	validationSchema={isLogin ? loginSchema : registerSchema}>
+		// 	{({
+		// 		// values,
+		// 		errors,
+		// 		touched,
+		// 		handleBlur,
+		// 		// handleChange,
+		// 		handleSubmit,
+		// 		setFieldValue,
+		// 		resetForm,
+		// 	}) => (
 				<form onSubmit={handleSubmit}>
 					<Box
 						display="grid"
@@ -146,35 +150,35 @@ const Form = () => {
 							<>
 								<TextField
 									label="First Name"
-									onBlur={handleBlur}
+									// onBlur={handleBlur}
 									onChange={handleChange}
 									value={values.firstName}
 									name="firstName"
-									error={
-										Boolean(touched.firstName) && Boolean(errors.firstName)
-									}
-									helperText={touched.firstName && errors.firstName}
+									// error={
+									// 	Boolean(touched.firstName) && Boolean(errors.firstName)
+									// }
+									// helperText={touched.firstName && errors.firstName}
 									sx={{ gridColumn: "span 2" }}
 								/>
 
 								<TextField
 									label="Last Name"
-									onBlur={handleBlur}
+									// onBlur={handleBlur}
 									onChange={handleChange}
 									value={values.lastName}
 									name="lastName"
-									error={Boolean(touched.lastName) && Boolean(errors.lastName)}
-									helperText={touched.lastName && errors.lastName}
+									// error={Boolean(touched.lastName) && Boolean(errors.lastName)}
+									// helperText={touched.lastName && errors.lastName}
 									sx={{ gridColumn: "span 2" }}
 								/>
 								<TextField
 									label="Location"
-									onBlur={handleBlur}
+									// onBlur={handleBlur}
 									onChange={handleChange}
 									value={values.location}
 									name="location"
-									error={Boolean(touched.location) && Boolean(errors.location)}
-									helperText={touched.location && errors.location}
+									// error={Boolean(touched.location) && Boolean(errors.location)}
+									// helperText={touched.location && errors.location}
 									sx={{ gridColumn: "span 2" }}
 								/>
 								<TextField
@@ -183,10 +187,10 @@ const Form = () => {
 									onChange={handleChange}
 									value={values.occupation}
 									name="occupation"
-									error={
-										Boolean(touched.occupation) && Boolean(errors.occupation)
-									}
-									helperText={touched.occupation && errors.occupation}
+									// error={
+									// 	Boolean(touched.occupation) && Boolean(errors.occupation)
+									// }
+									// helperText={touched.occupation && errors.occupation}
 									sx={{ gridColumn: "span 2" }}
 								/>
 								{/* <Box
@@ -223,23 +227,23 @@ const Form = () => {
 						)}
 						<TextField
 							label="Email"
-							onBlur={handleBlur}
+							// onBlur={handleBlur}
 							onChange={handleChange}
 							value={values.email}
 							name="email"
-							error={Boolean(touched.email) && Boolean(errors.email)}
-							helperText={touched.email && errors.email}
+							// error={Boolean(touched.email) && Boolean(errors.email)}
+							// helperText={touched.email && errors.email}
 							sx={{ gridColumn: "span 4" }}
 						/>
 						<TextField
 							label="Password"
 							type='password'
-							onBlur={handleBlur}
+							// onBlur={handleBlur}
 							onChange={handleChange}
 							value={values.password}
 							name="password"
-							error={Boolean(touched.password) && Boolean(errors.password)}
-							helperText={touched.password && errors.password}
+							// error={Boolean(touched.password) && Boolean(errors.password)}
+							// helperText={touched.password && errors.password}
 							sx={{ gridColumn: "span 4" }}
 						/>
 					</Box>
@@ -260,7 +264,7 @@ const Form = () => {
 						<Typography
 							onClick={() => {
 								setPageType(isLogin ? "register" : "login");
-								resetForm();
+								// resetForm();
 							}}
 							sx={{
 								textDecoration: "underline",
@@ -276,8 +280,8 @@ const Form = () => {
 						</Typography>
 					</Box>
 				</form>
-			)}
-		</Formik>
+			// )}
+		// </Formik>
 	);
 };
 

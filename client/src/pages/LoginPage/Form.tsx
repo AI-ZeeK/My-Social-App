@@ -8,28 +8,12 @@ import {
 	useMediaQuery,
 	useTheme,
 } from "@mui/material";
-import { Formik } from "formik";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {registerPost, loginPost} from '../../state/ApiSlice';
-import * as yup from "yup";
 import FlexBetween from "../../components/FlexBetween";
 import Dropzone from "react-dropzone";
-
-const registerSchema = yup.object().shape({
-	firstName: yup.string().required("required"),
-	lastName: yup.string().required("required"),
-	email: yup.string().email("Invalid email").required("required"),
-	password: yup.string().required("required"),
-	location: yup.string().required("required"),
-	occupation: yup.string().required("required"),
-	picture: yup.string().required("required"),
-});
-const loginSchema = yup.object().shape({
-	email: yup.string().email("Invalid email").required("required"),
-	password: yup.string().required("required"),
-});
 
 const initialValuesRegister = {
 	firstName: "",
@@ -40,10 +24,6 @@ const initialValuesRegister = {
 	occupation: "",
 };
 
-const initialValuesLogin = {
-	email: "",
-	password: "",
-};
 
 const Form = () => {
 	const [pageType, setPageType] = useState("login");
@@ -66,30 +46,13 @@ const Form = () => {
 			console.log(formData, values, "new regggs");
 			const xData = Object.assign(formData, { ...values });
 			setUserData({...xData, ['picturePath']: picturePath.name , ['picture'] : picturePath})
-			// for (let value in values) {
-			// 	formData.append(value, values[value]);
-			// }
-			// formData.append("picturePath", values.picture.name);
-			// console.log( userData, "new vererer",);
-
-			// const savedUserResponse = await fetch(
-			// 	"https://my-social-app-gqkj.onrender.com/auth/register",
-			// 	{
-			// 		method: "POST",
-			// 		body: x,
-			// 	}
-			// );
+		
 			dispatch(registerPost(userData))
 			if(isSuccess) {
 				setFormData(initialValuesRegister)
 				navigate('/home')
 			}
-			// onSubmitProps.resetForm();
-			// console.log(formData, "new regggs");
-
-			// if (savedUser) {
-			// 	setPageType("login");
-			// }
+			
 		} catch (error) {
 			console.log(error, "new errrorr");
 		}
@@ -102,24 +65,6 @@ const Form = () => {
 		}
 		navigate('/home')
 
-		// this
-		// const loggedInResponse = await fetch("https://my-social-app-gqkj.onrender.com/auth/login", {
-		// 	method: "POST",
-		// 	headers: { "Content-Type": "application/json" },
-		// 	body: JSON.stringify(values),
-		// });
-		// const loggedIn = await loggedInResponse.json();
-		// onSubmitProps.resetForm();
-
-		// if (loggedIn) {
-		// 	dispatch(
-		// 		setLogin({
-		// 			user: loggedIn.user,
-		// 			token: loggedIn.token,
-		// 		})
-		// 	);
-		// 	navigate("/home");
-		// }
 	};
 	const handleFormSubmit = async (_values: any, onSubmitProps: any) => {
 		console.log('not really')

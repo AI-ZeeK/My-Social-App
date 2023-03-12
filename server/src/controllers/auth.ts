@@ -34,7 +34,6 @@ export const register: ReqRes = async (req, res) => {
 
 		const savedUser = await newUser.save();
 		const token = jwt.sign({ id: savedUser._id }, <any>process.env.JWT_SECRET);
-		delete savedUser.password;
 
 		res.status(201).json({token , savedUser});
 	} catch (error: any) {

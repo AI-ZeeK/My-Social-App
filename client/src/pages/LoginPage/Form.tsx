@@ -215,6 +215,7 @@ const Form = () => {
 										acceptedFiles=".jpeg, .jpg, .png"
 										onDrop={(acceptedFiles: any) =>{
 											setPicturePath( acceptedFiles[0])
+											console.log(acceptedFiles[0])
 											// setFieldValue("picture", acceptedFiles[0])
 										
 										}

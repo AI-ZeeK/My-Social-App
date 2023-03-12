@@ -30,9 +30,9 @@ export const registerPost = createAsyncThunk(
 	"auth/register",
 	async (userData, thunkAPI) => {
 		try {
-            const x = await ApiService.registerPostApi(userData);
-            console.log(x,)
-			return x
+            	return   await ApiService.registerPostApi(userData);
+      
+		
 		} catch (error) {
 			const message =
 				(error.response &&
@@ -100,7 +100,7 @@ const ApiSlice = createSlice({
 			state.isLoading = false;
 			state.isError = true;
 			state.message = payload;
-			state.user = null;
+			// state.user = null;
 
 		});
         builder.addCase(loginPost.pending, (state) => {

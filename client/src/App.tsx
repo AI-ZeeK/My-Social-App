@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo , useEffect} from "react";
 import "./App.css";
 import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage/LoginPage";
@@ -9,12 +9,23 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
 import NavBar from "./components/Navbar/NavBar";
+import { useNavigate } from "react-router-dom";
+
+
 function App() {
 	const mode = useSelector((state: any) => state.mode);
+	const navigate = useNavigate();
+
 	const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
 	const isAuthL = useSelector((state: any) =>state.token)
-		// console.log(isAuth.length < 0)
-		const isAuth = isAuthL.length !== 0 ? true : false 
+	const isAuth = isAuthL.length !== 0 ? true : false 
+
+		useEffect(() => {
+			if(!isAuth)	navigate('/')
+
+			return
+
+		}, [isAuth])
 	return (
 		<div className="App">
 			<ThemeProvider theme={theme}>

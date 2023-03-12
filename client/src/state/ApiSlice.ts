@@ -8,7 +8,8 @@ interface initialProps {
     isSuccess: boolean;
     errorMsg: string;
     user: [];
-    token: string
+    token: string;
+    mode: string,
 }
 const tokenData = 
 localStorage.getItem("token") !== null
@@ -24,7 +25,8 @@ const initialState: initialProps = {
     isSuccess: false,
     errorMsg :'',
     user: userData ,
-    token: tokenData
+    token: tokenData,
+    mode: "light",
 };
 export const registerPost = createAsyncThunk(
 	"auth/register",
@@ -72,7 +74,17 @@ const ApiSlice = createSlice({
 			state.isError = false;
 			state.errorMsg = "";
             console.log('ddffff')
-        }
+        },
+        setLogout: (state) => {
+            state.token = []
+            localStorage.removeItem("token") 
+            localStorage.removeItem("user") 
+  
+        },
+    
+            setMode: (state) => {
+                state.mode = state.mode === "light" ? "dark" : "light";
+            },
     },
     extraReducers: (builder) => {
         builder.addCase(registerPost.pending, (state) => {
@@ -135,5 +147,5 @@ const ApiSlice = createSlice({
 
 })
 
-export const { reset } = ApiSlice.actions;
+export const { reset,setLogout , setMode} = ApiSlice.actions;
 export default ApiSlice.reducer;

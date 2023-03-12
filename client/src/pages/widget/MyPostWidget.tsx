@@ -29,6 +29,7 @@ import {
     const dispatch = useDispatch();
     const [isImage, setIsImage] = useState(false);
     const [image, setImage] = useState(null);
+    const [formData, setFormData] = useState({userId : '', description : '', picturePath : '', picture : '' })
     const [post, setPost] = useState("");
     const { palette }: any = useTheme();
     const { _id } = useSelector((state: any) => state.user);
@@ -38,15 +39,23 @@ import {
     const medium = palette.neutral.medium;
   
     const handlePost = async () => {
-      const formData = new FormData();
-      formData.append("userId", _id);
-      formData.append("description", post);
-      if (image) {
-        formData.append("picture", image);
-        formData.append("picturePath", image.name);
-      }
+      // const formData = new FormData();
+      if (image)  await  setFormData((prev) => ({...prev,['userId']: _id, ['description']: post, ['picturePath']: image.name, ['picture']: image }));
+
+
+
+      await  setFormData((prev) => ({...prev,['userId']: _id, ['description']: post }))
+
+
+  //     formData.assign(["userId"], _id);
+  //  const x =   formData.assign(["description"], post);
+   
+  //     if (image) {
+  //       formData.assign(["picture"], image);
+  //       formData.assign(["picturePath"], image.name);
+  //     }
   
-      const response = await fetch(`http://localhost:3001/posts`, {
+      const response = await fetch(`https://my-social-app-gqkj.onrender.com/posts`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
@@ -83,7 +92,16 @@ import {
             <Dropzone
               acceptedFiles=".jpg,.jpeg,.png"
               multiple={false}
-              onDrop={(acceptedFiles: any) => setImage(acceptedFiles[0])}
+              onDrop={(acceptedFiles: any) =>{
+                
+                const reader =  new FileReader()
+                reader.onload = (event) => setImage(acceptedFiles[0])
+                  reader.readAsDataURL(acceptedFiles[0])
+                  // Store result into  your state array
+
+      
+              }
+              }
             >
               {({ getRootProps, getInputProps }) => (
                 <FlexBetween>

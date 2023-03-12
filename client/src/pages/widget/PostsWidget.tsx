@@ -29,13 +29,14 @@ const PostsWidget = ({ userId, isProfile = false }: any) => {
 		dispatch(setPosts({ posts: data }));
 	};
 
-	useEffect(() => {
-		if (isProfile) {
-			getUserPosts();
-		} else {
-			getPosts();
-		}
-	}, []); // eslint-disable-line react-hooks/exhaustive-deps
+	// useEffect(() => {
+	// 	if (isProfile) {
+	// 		getUserPosts();
+	// 	} else {
+	// 		getPosts();
+	// 	}
+	// }, []); 
+	// eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
 		<>

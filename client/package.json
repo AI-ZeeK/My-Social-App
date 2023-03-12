@@ -2,6 +2,8 @@
   "name": "client",
   "private": true,
   "version": "0.0.0",
+  "allowedHosts": "all",
+	"proxy": "https://my-social-app-gqkj.onrender.com",
   "type": "module",
   "scripts": {
     "dev": "vite",

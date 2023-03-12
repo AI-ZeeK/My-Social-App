@@ -23,10 +23,10 @@ import {
 } from "@mui/icons-material";
 
 import { useDispatch, useSelector } from "react-redux";
-// import { setMode, setLogout } from "../../state/AppSlice";
+import { setMode, setLogout } from "../../state/ApiSlice";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "../FlexBetween";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 type Props = {};
 const NavBar = (props: Props) => {
 	const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
@@ -141,7 +141,7 @@ const NavBar = (props: Props) => {
 							alignItems={"center"}
 							gap={"3rem"}>
 							<IconButton
-								// onClick={() => dispatch(setMode())}
+								onClick={() => dispatch(setMode())}
 								sx={{ fontSize: "25px" }}>
 								{theme.palette.mode === "dark" ? (
 									<DarkMode sx={{ fontSize: "25px" }} />
@@ -173,7 +173,10 @@ const NavBar = (props: Props) => {
 										<Typography>{fullName}</Typography>
 									</MenuItem>
 									<MenuItem
-										// onClick={() => dispatch(setLogout())}
+										onClick={() => {
+											dispatch(setLogout())
+										navigate('/')
+										}}
 										value={fullName}>
 										Log Out
 									</MenuItem>

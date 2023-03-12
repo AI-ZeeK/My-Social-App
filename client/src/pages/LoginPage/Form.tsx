@@ -8,12 +8,13 @@ import {
 	useMediaQuery,
 	useTheme,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {registerPost, loginPost} from '../../state/ApiSlice';
 import FlexBetween from "../../components/FlexBetween";
 import Dropzone from "react-dropzone";
+import FileBase64 from "react-file-base64";
 
 const initialValuesRegister = {
 	firstName: "",
@@ -25,9 +26,12 @@ const initialValuesRegister = {
 };
 
 
+
+
 const Form = () => {
 	const [pageType, setPageType] = useState("login");
 	const [picturePath, setPicturePath] = useState(null)
+	const [picturePathBase64, setPicturePathBase64] = useState(null)
 	const [formData, setFormData] = useState(initialValuesRegister);
 	const [userData, setUserData] = useState(null)
 	const values = formData;
@@ -45,13 +49,10 @@ const Form = () => {
 
 			console.log(formData, values, "new regggs");
 			const xData = Object.assign(formData, { ...values });
-			setUserData({...xData, ['picturePath']: picturePath.name , ['picture'] : picturePath})
+			setUserData({...xData, ['picturePath']:  picturePathBase64 , ['picture'] : picturePath})
 		
 			dispatch(registerPost(userData))
-			if(isSuccess) {
-				setFormData(initialValuesRegister)
-				navigate('/home')
-			}
+			
 			
 		} catch (error) {
 			console.log(error, "new errrorr");
@@ -59,11 +60,8 @@ const Form = () => {
 	};
 	const login = async (values: any, onSubmitProps: any) => {
 		await dispatch(loginPost(values))	
-		if(isSuccess) {
-			setFormData(initialValuesRegister)
-			navigate('/home')
-		}
-		navigate('/home')
+	
+	
 
 	};
 	const handleFormSubmit = async (_values: any, onSubmitProps: any) => {
@@ -83,6 +81,33 @@ const Form = () => {
 	};
 	const handleBlur = false 
 	const setFieldValue = true
+	const handleDone = ({ base64 }: any) => {
+		setPicturePath({ selectedFile: base64 });
+		console.log('hghfduhdvjkdfdfjvhkjs' , picturePath)
+	};
+
+	const encodeBase64 = (file) => {
+		let reader = new FileReader()
+		if (file) {
+			reader.readAsDataURL(file)
+			reader.onload = () => {
+				let Base64 = reader.result;
+				setPicturePathBase64(JSON.stringify(Base64))
+				console.log('not error: ', picturePathBase64)
+
+			}
+			reader.onerror = (error) => {
+				console.log('error: ', error)
+			}
+		}
+		console.log('error: ', picturePath)
+	}
+	useEffect(() => {
+		if(isSuccess){
+			navigate('/home')
+		}
+	  
+	  }, [isSuccess])
 
 	return (
 		// <Formik
@@ -159,9 +184,23 @@ const Form = () => {
 									borderRadius="5px"
 									p="1rem"
 									border={`1px solid ${palette.neutral.medium}`}>
+										{/* <FileBase64
+										style={{display: 'none'}}
+										className='display-none'
+										
+						type="file"
+						value={picturePath}
+						onChange={(e) => { 	
+						setPicturePath( e.target.files)
+						} }
+						placeholder="Select Files"
+						multiple={false}
+						onDone={handleDone}
+					/> */}
 									<Dropzone
 										acceptedFiles=".jpeg, .jpg, .png"
 										onDrop={(acceptedFiles: any) =>{
+											encodeBase64(acceptedFiles[0])
 											setPicturePath( acceptedFiles[0])
 											console.log(acceptedFiles[0])
 											// setFieldValue("picture", acceptedFiles[0])
@@ -170,6 +209,7 @@ const Form = () => {
 										}
 										multiple={false}>
 										{({ getRootProps, getInputProps }) => (
+											
 											<Box
 												{...getRootProps()}
 												border={`2px dashed ${palette.primary.main}`}

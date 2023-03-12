@@ -23,10 +23,10 @@ const AppSlice = createSlice({
 			// state.user = payload.user;
 			state.token = payload.token;
 		},
-		setLogout: (state) => {
-			// state.user = null;
-			state.login = null;
-		},
+		// setLogout: (state) => {
+		// 	// state.user = null;
+		// 	state.login = null;
+		// },
 		setFriends: (state, { payload }) => {
 			if (state.user) {
 				state.user.friends = payload.friends;
@@ -50,6 +50,6 @@ const AppSlice = createSlice({
 	},
 });
 
-export const { setMode, setLogin, setLogout, setFriends, setPosts, setPost } =
+export const { setMode, setLogin, setFriends, setPosts, setPost } =
 	AppSlice.actions;
 export default AppSlice.reducer;

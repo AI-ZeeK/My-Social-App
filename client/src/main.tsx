@@ -19,9 +19,10 @@ import { configureStore } from "@reduxjs/toolkit";
 import storage from "redux-persist/lib/storage";
 import { PersistGate } from "redux-persist/integration/react";
 import AppSlice from "./state/AppSlice";
+import ApiSlice from "./state/ApiSlice";
 
 const persistConfig = { key: "root", storage, version: 1 };
-const persistedReducer = persistReducer(persistConfig, AppSlice);
+const persistedReducer = persistReducer(persistConfig, ApiSlice, AppSlice);
 
 const newstore: any = configureStore({
 	reducer: persistedReducer,

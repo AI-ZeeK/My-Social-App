@@ -23,7 +23,7 @@ import {
 } from "@mui/icons-material";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setMode, setLogout } from "../../state/AppSlice";
+// import { setMode, setLogout } from "../../state/AppSlice";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "../FlexBetween";
 import { useState } from "react";
@@ -32,7 +32,7 @@ const NavBar = (props: Props) => {
 	const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const user = useSelector((state: any) => state.user);
+	const {user} = useSelector((state: any) => state);
 	const isNonMobileScreens = useMediaQuery("(min-width : 1000px)");
 	const theme: any = useTheme();
 	const neutralLight = theme.palette.neutral.light;
@@ -43,6 +43,7 @@ const NavBar = (props: Props) => {
 	// let fullName;
 
 	const fullName = `${user.firstName} ${user.lastName}`;
+	console.log(user)
 
 	return (
 		<FlexBetween padding="1rem 6%" backgroundColor={alt}>
@@ -140,7 +141,7 @@ const NavBar = (props: Props) => {
 							alignItems={"center"}
 							gap={"3rem"}>
 							<IconButton
-								onClick={() => dispatch(setMode())}
+								// onClick={() => dispatch(setMode())}
 								sx={{ fontSize: "25px" }}>
 								{theme.palette.mode === "dark" ? (
 									<DarkMode sx={{ fontSize: "25px" }} />
@@ -172,7 +173,7 @@ const NavBar = (props: Props) => {
 										<Typography>{fullName}</Typography>
 									</MenuItem>
 									<MenuItem
-										onClick={() => dispatch(setLogout())}
+										// onClick={() => dispatch(setLogout())}
 										value={fullName}>
 										Log Out
 									</MenuItem>

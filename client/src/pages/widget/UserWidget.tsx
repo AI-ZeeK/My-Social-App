@@ -15,18 +15,18 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const UserWidget = ({ userId, picturePath }: any) => {
-	const [user, setUser] = useState({
-		firstName: "green",
-		lastName: "theo",
-		location: "norway",
-		occupation: "miner",
-		viewedProfile: true,
-		impressions: 6,
-		friends: ["green"],
-	});
+	// const [user, setUser] = useState({
+	// 	firstName: "green",
+	// 	lastName: "theo",
+	// 	location: "norway",
+	// 	occupation: "miner",
+	// 	viewedProfile: true,
+	// 	impressions: 6,
+	// 	friends: ["green"],
+	// });
 	const { palette }: any = useTheme();
 	const navigate = useNavigate();
-	const token = useSelector((state: any) => state.token);
+	const {token, user} = useSelector((state: any) => state);
 	const dark = palette.neutral.dark;
 	const medium = palette.neutral.medium;
 	const main = palette.neutral.main;
@@ -80,7 +80,7 @@ const UserWidget = ({ userId, picturePath }: any) => {
 							}}>
 							{firstName} {lastName}
 						</Typography>
-						<Typography color={medium}>{friends.length} friends </Typography>
+						<Typography color={medium}>{friends?.length} friends </Typography>
 					</Box>
 				</FlexBetween>
 				<ManageAccountsOutlined />

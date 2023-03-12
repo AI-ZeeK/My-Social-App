@@ -2,13 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: any = {
 	mode: "light",
-	user: {
-		firstName: "fake",
-		lastName: "person",
-		_id: 5287873,
-		picturePath: ''
-	},
-	token: true,
+	// user: {
+	// 	// firstName: "fake",
+	// 	// lastName: "person",
+	// 	// _id: 5287873,
+	// 	// picturePath: ''
+	// },
+
 	posts: [],
 };
 
@@ -20,11 +20,11 @@ const AppSlice = createSlice({
 			state.mode = state.mode === "light" ? "dark" : "light";
 		},
 		setLogin: (state, { payload }) => {
-			state.user = payload.user;
+			// state.user = payload.user;
 			state.token = payload.token;
 		},
 		setLogout: (state) => {
-			state.user = null;
+			// state.user = null;
 			state.login = null;
 		},
 		setFriends: (state, { payload }) => {

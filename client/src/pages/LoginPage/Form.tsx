@@ -10,8 +10,9 @@ import {
 } from "@mui/material";
 import { Formik } from "formik";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import {registerPost, loginPost} from '../../state/ApiSlice';
 import * as yup from "yup";
 import FlexBetween from "../../components/FlexBetween";
 import Dropzone from "react-dropzone";
@@ -37,8 +38,8 @@ const initialValuesRegister = {
 	password: "",
 	location: "",
 	occupation: "",
-	// picture: "",
 };
+
 const initialValuesLogin = {
 	email: "",
 	password: "",
@@ -46,9 +47,12 @@ const initialValuesLogin = {
 
 const Form = () => {
 	const [pageType, setPageType] = useState("login");
+	const [picturePath, setPicturePath] = useState(null)
 	const [formData, setFormData] = useState(initialValuesRegister);
+	const [userData, setUserData] = useState(null)
 	const values = formData;
 	const { palette } = useTheme();
+	const {isError, isSuccess} = useSelector((state) =>  state)
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const isNonMobile = useMediaQuery("(min-width: 600px");
@@ -60,51 +64,59 @@ const Form = () => {
 			const formData = new FormData();
 
 			console.log(formData, values, "new regggs");
-			const x = Object.assign(formData, { ...values });
+			const xData = Object.assign(formData, { ...values });
+			setUserData({...xData, ['picturePath']: picturePath.name})
 			// for (let value in values) {
 			// 	formData.append(value, values[value]);
 			// }
 			// formData.append("picturePath", values.picture.name);
-			console.log(x, values, "new vererer", formData);
+			// console.log( userData, "new vererer",);
 
-			const savedUserResponse = await fetch(
-				"https://my-social-app-gqkj.onrender.com/auth/register",
-				{
-					method: "POST",
-					body: x,
-				}
-			);
-			const savedUser = await savedUserResponse.json();
-			console.log(savedUserResponse, "saved User", savedUser);
-			onSubmitProps.resetForm();
-			console.log(formData, "new regggs");
+			// const savedUserResponse = await fetch(
+			// 	"https://my-social-app-gqkj.onrender.com/auth/register",
+			// 	{
+			// 		method: "POST",
+			// 		body: x,
+			// 	}
+			// );
+			dispatch(registerPost(userData))
+			
+			// onSubmitProps.resetForm();
+			// console.log(formData, "new regggs");
 
-			if (savedUser) {
-				setPageType("login");
-			}
+			// if (savedUser) {
+			// 	setPageType("login");
+			// }
 		} catch (error) {
 			console.log(error, "new errrorr");
 		}
 	};
 	const login = async (values: any, onSubmitProps: any) => {
-		// this
-		const loggedInResponse = await fetch("https://my-social-app-gqkj.onrender.com/auth/login", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(values),
-		});
-		const loggedIn = await loggedInResponse.json();
-		onSubmitProps.resetForm();
-
-		if (loggedIn) {
-			dispatch(
-				setLogin({
-					user: loggedIn.user,
-					token: loggedIn.token,
-				})
-			);
-			navigate("/home");
+		await dispatch(loginPost(values))	
+		if(isSuccess) {
+			setFormData(initialValuesRegister)
+			navigate('/home')
 		}
+		navigate('/home')
+
+		// this
+		// const loggedInResponse = await fetch("https://my-social-app-gqkj.onrender.com/auth/login", {
+		// 	method: "POST",
+		// 	headers: { "Content-Type": "application/json" },
+		// 	body: JSON.stringify(values),
+		// });
+		// const loggedIn = await loggedInResponse.json();
+		// onSubmitProps.resetForm();
+
+		// if (loggedIn) {
+		// 	dispatch(
+		// 		setLogin({
+		// 			user: loggedIn.user,
+		// 			token: loggedIn.token,
+		// 		})
+		// 	);
+		// 	navigate("/home");
+		// }
 	};
 	const handleFormSubmit = async (_values: any, onSubmitProps: any) => {
 		console.log('not really')
@@ -115,6 +127,7 @@ const Form = () => {
 		e.preventDefault()
 		console.log("screen", isLogin, isRegister);
 		if (isRegister) return await register(values);
+		if (isLogin) return await login(values);
 
 	};
 	const handleChange = (e: any) => {
@@ -183,7 +196,7 @@ const Form = () => {
 								/>
 								<TextField
 									label="Occupation"
-									onBlur={handleBlur}
+									// onBlur={handleBlur}
 									onChange={handleChange}
 									value={values.occupation}
 									name="occupation"
@@ -193,15 +206,18 @@ const Form = () => {
 									// helperText={touched.occupation && errors.occupation}
 									sx={{ gridColumn: "span 2" }}
 								/>
-								{/* <Box
+								<Box
 									gridColumn="span 4"
 									borderRadius="5px"
 									p="1rem"
 									border={`1px solid ${palette.neutral.medium}`}>
 									<Dropzone
 										acceptedFiles=".jpeg, .jpg, .png"
-										onDrop={(acceptedFiles: any) =>
-											setFieldValue("picture", acceptedFiles[0])
+										onDrop={(acceptedFiles: any) =>{
+											setPicturePath( acceptedFiles[0])
+											// setFieldValue("picture", acceptedFiles[0])
+										
+										}
 										}
 										multiple={false}>
 										{({ getRootProps, getInputProps }) => (
@@ -211,18 +227,18 @@ const Form = () => {
 												p="1rem"
 												sx={{ "&:hover": { cursor: "pointer" } }}>
 												<input {...getInputProps()} />
-												{!values.picture ? (
+												{!picturePath ? (
 													<p>Add Picture Here</p>
 												) : (
 													<FlexBetween>
-														<Typography>{values.picture.name}</Typography>
+														<Typography>{picturePath.name}</Typography>
 														<EditOutlinedIcon />
 													</FlexBetween>
 												)}
 											</Box>
 										)}
 									</Dropzone>
-								</Box> */}
+								</Box>
 							</>
 						)}
 						<TextField

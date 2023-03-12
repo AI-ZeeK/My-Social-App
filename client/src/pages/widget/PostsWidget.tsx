@@ -9,7 +9,7 @@ const PostsWidget = ({ userId, isProfile = false }: any) => {
 	const token = useSelector((state: any) => state.token);
 
 	const getPosts = async () => {
-		const response = await fetch("http://localhost:5000/posts", {
+		const response = await fetch("https://my-social-app-gqkj.onrender.com/posts", {
 			method: "GET",
 			headers: { Authorization: `Bearer ${token}` },
 		});
@@ -19,7 +19,7 @@ const PostsWidget = ({ userId, isProfile = false }: any) => {
 
 	const getUserPosts = async () => {
 		const response = await fetch(
-			`http://localhost:5000/posts/${userId}/posts`,
+			`https://my-social-app-gqkj.onrender.com/posts/${userId}/posts`,
 			{
 				method: "GET",
 				headers: { Authorization: `Bearer ${token}` },

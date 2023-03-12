@@ -65,7 +65,7 @@ const Form = () => {
 
 			console.log(formData, values, "new regggs");
 			const xData = Object.assign(formData, { ...values });
-			setUserData({...xData, ['picturePath']: picturePath.name})
+			setUserData({...xData, ['picturePath']: picturePath.name , ['picture'] : picturePath})
 			// for (let value in values) {
 			// 	formData.append(value, values[value]);
 			// }
@@ -80,7 +80,10 @@ const Form = () => {
 			// 	}
 			// );
 			dispatch(registerPost(userData))
-			
+			if(isSuccess) {
+				setFormData(initialValuesRegister)
+				navigate('/home')
+			}
 			// onSubmitProps.resetForm();
 			// console.log(formData, "new regggs");
 

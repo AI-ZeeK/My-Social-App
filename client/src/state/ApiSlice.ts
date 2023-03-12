@@ -82,7 +82,7 @@ const ApiSlice = createSlice({
         builder.addCase(registerPost.fulfilled, (state, {payload}) => {
             state.isLoading = false;
 			state.isSuccess = true;
-			state.user = payload.user
+			state.user = payload.savedUser
 			state.token = payload.token
             localStorage.setItem(
 				"token",
@@ -92,7 +92,7 @@ const ApiSlice = createSlice({
 				"user",
 				JSON.stringify(state.user)
 			);
-            console.log('isSuccess vndn', state.token, state.user)
+            console.log('isSuccess vndn', payload, state.token, state.user)
 
 		});
 		builder.addCase(registerPost.rejected, (state, {payload}) => {

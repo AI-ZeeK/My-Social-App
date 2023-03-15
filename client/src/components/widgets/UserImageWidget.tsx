@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";
 
-const UserImage = ({ image, size = "60px" }) => {
+const UserImage = ({ image, size = "60px" }: any) => {
 	return (
 		<Box width={size} height={size}>
 			<img
@@ -9,7 +9,8 @@ const UserImage = ({ image, size = "60px" }) => {
 				height={size}
 				style={{ objectFit: "cover", borderRadius: "50%" }}
 				alt="user"
-				src={`https://my-social-app-gqkj.onrender.com/assets/${image}`}
+				// src={`https://my-social-app-gqkj.onrender.com/assets/${image}`}
+				src={image}
 			/>
 		</Box>
 	);

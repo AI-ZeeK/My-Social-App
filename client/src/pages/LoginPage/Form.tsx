@@ -39,17 +39,24 @@ const Form = () => {
 	const isNonMobile = useMediaQuery("(min-width: 600px");
 	const isLogin = pageType === "login";
 	const isRegister = pageType === "register";
-	const register = async (values: any, onSubmitProps: any) => {
+	const register = async (values: any) => {
 		// this
 		try {
 			const formData = new FormData();
-
+			const xData = await  Object.assign(formData, { ...values });
 			console.log(formData, values, "new regggs");
-			const xData = Object.assign(formData, { ...values });
+			// console.log(formData.get())
+			// for(let key of formData.keys()){
+			// 	console.log(formData.get(key).size) 
+					
+				
+			// }
 			setUserData({
 				...xData,
-				["picturePath"]: picturePathBase64,
-				["picture"]: picturePath,
+				// ["picturePath"]: picturePathBase64,
+				[picturePath]: picturePathBase64,
+				// ["picture"]: picturePath,
+				["picture"]: 'picturePathBase64',
 			});
 
 			dispatch(registerPost(userData));
@@ -57,14 +64,14 @@ const Form = () => {
 			console.log(error, "new errrorr");
 		}
 	};
-	const login = async (values: any, onSubmitProps: any) => {
+	const login = async (values: any) => {
 		await dispatch(loginPost(values));
 	};
-	const handleFormSubmit = async (_values: any, onSubmitProps: any) => {
-		console.log("not really");
-		if (isLogin) return await login(values, onSubmitProps);
-		if (isRegister) return await register(values, onSubmitProps);
-	};
+	// const handleFormSubmit = async (_values: any, onSubmitProps: any) => {
+	// 	console.log("not really");
+	// 	if (isLogin) return await login(values, onSubmitProps);
+	// 	if (isRegister) return await register(values, onSubmitProps);
+	// };
 	const handleSubmit = async (e: MouseEvent) => {
 		e.preventDefault();
 		console.log("screen", isLogin, isRegister);
@@ -73,17 +80,17 @@ const Form = () => {
 	};
 	const handleChange = (e: any) => {
 		setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-	};
+	}; 
 	const handleBlur = false;
 	const setFieldValue = true;
 
 	const encodeBase64 = (file: any) => {
-		let reader = new FileReader();
+		let reader =  new FileReader();
 		if (file) {
-			reader.readAsDataURL(file);
-			reader.onload = () => {
-				let Base64 = reader.result;
-				setPicturePathBase64(Base64);
+				reader.readAsDataURL(file);
+			reader.onload = async () => {
+				let Base64 : any = await reader.result;
+				await setPicturePathBase64(Base64);
 				console.log("not error: ", picturePathBase64);
 			};
 			reader.onerror = (error) => {

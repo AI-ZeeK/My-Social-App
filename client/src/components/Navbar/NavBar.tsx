@@ -43,7 +43,7 @@ const NavBar = (props: Props) => {
 	// let fullName;
 
 	const fullName = `${user.firstName} ${user.lastName}`;
-	console.log(user)
+	// console.log(user)
 
 	return (
 		<FlexBetween padding="1rem 6%" backgroundColor={alt}>

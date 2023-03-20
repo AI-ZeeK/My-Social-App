@@ -35,18 +35,21 @@ const PostWidget = ({
 	const primary = palette.primary.main;
 
 	const patchLike = async () => {
-		const response = await fetch(`https://my-social-app-gqkj.onrender.com/posts/${postId}/like`, {
-			method: "PATCH",
-			headers: {
-				Authorization: `Bearer ${token}`,
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ userId: loggedInUserId }),
-		});
+		const response = await fetch(
+			`https://my-social-app-gqkj.onrender.com/posts/${postId}/like`,
+			{
+				method: "PATCH",
+				headers: {
+					Authorization: `Bearer ${token}`,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ userId: loggedInUserId }),
+			}
+		);
 		const updatedPost = await response.json();
 		dispatch(setPost({ post: updatedPost }));
 	};
-
+	// console.log(picturePath);
 	return (
 		<WidgetWrapper m="2rem 0">
 			<Friend
@@ -64,7 +67,7 @@ const PostWidget = ({
 					height="auto"
 					alt="post"
 					style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-					src={`http://localhost:5000/assets/${picturePath}`}
+					src={picturePath}
 				/>
 			)}
 			<FlexBetween mt="0.25rem">
@@ -92,7 +95,7 @@ const PostWidget = ({
 					<ShareOutlined />
 				</IconButton>
 			</FlexBetween>
-			{isComments && (
+			{/* {isComments && (
 				<Box mt="0.5rem">
 					{comments.map((comment: any, i: any) => (
 						<Box key={`${name}-${i}`}>
@@ -104,8 +107,9 @@ const PostWidget = ({
 					))}
 					<Divider />
 				</Box>
-			)}
+			)} */}
 		</WidgetWrapper>
+		// <h1>Greeen</h1>
 	);
 };
 

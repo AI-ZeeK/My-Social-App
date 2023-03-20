@@ -11,10 +11,14 @@ import {
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { registerPost, loginPost } from "../../state/ApiSlice";
+import {
+	registerPost,
+	loginPost,
+	setPicturePathBase64,
+} from "../../state/ApiSlice";
 import FlexBetween from "../../components/FlexBetween";
 import Dropzone from "react-dropzone";
-import FileBase64 from "react-file-base64";
+// import FileBase64 from "react-file-base64";
 
 const initialValuesRegister = {
 	firstName: "",
@@ -27,39 +31,36 @@ const initialValuesRegister = {
 
 const Form = () => {
 	const [pageType, setPageType] = useState("login");
+	const isLogin = pageType === "login";
+	const isRegister = pageType === "register";
 	const [picturePath, setPicturePath] = useState(null);
-	const [picturePathBase64, setPicturePathBase64] = useState(null);
+	// const [picturePathBase64, setPicturePathBase64] = useState<string | null>(
+	// 	null
+	// );
 	const [formData, setFormData] = useState(initialValuesRegister);
 	const [userData, setUserData] = useState(null);
 	const values = formData;
-	const { palette } = useTheme();
-	const { isError, isSuccess }: any = useSelector((state) => state);
+	const { palette }: any = useTheme();
+	const { isError, isSuccess, picturePathBase64 }: any = useSelector(
+		(state) => state
+	);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const isNonMobile = useMediaQuery("(min-width: 600px");
-	const isLogin = pageType === "login";
-	const isRegister = pageType === "register";
-	const register = async (values: any) => {
-		// this
+
+	const register = (values: any) => {
 		try {
 			const formData = new FormData();
-			const xData = await  Object.assign(formData, { ...values });
-			console.log(formData, values, "new regggs");
-			// console.log(formData.get())
-			// for(let key of formData.keys()){
-			// 	console.log(formData.get(key).size) 
-					
-				
-			// }
-			setUserData({
-				...xData,
-				// ["picturePath"]: picturePathBase64,
-				[picturePath]: picturePathBase64,
-				// ["picture"]: picturePath,
-				["picture"]: 'picturePathBase64',
-			});
+			const xData = Object.assign(formData, { ...values });
 
-			dispatch(registerPost(userData));
+			setUserData((prev: any) => ({
+				...prev,
+				...xData,
+				["picturePath"]: picturePathBase64,
+			}));
+			console.log(userData, values, "new regggs");
+
+			userData && dispatch(registerPost(userData));
 		} catch (error) {
 			console.log(error, "new errrorr");
 		}
@@ -72,32 +73,33 @@ const Form = () => {
 	// 	if (isLogin) return await login(values, onSubmitProps);
 	// 	if (isRegister) return await register(values, onSubmitProps);
 	// };
-	const handleSubmit = async (e: MouseEvent) => {
-		e.preventDefault();
+	const handleSubmit = async () => {
 		console.log("screen", isLogin, isRegister);
-		if (isRegister) return await register(values);
-		if (isLogin) return await login(values);
+		if (isRegister) await register(values);
+		if (isLogin) await login(values);
 	};
 	const handleChange = (e: any) => {
 		setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-	}; 
-	const handleBlur = false;
-	const setFieldValue = true;
-
+	};
 	const encodeBase64 = (file: any) => {
-		let reader =  new FileReader();
+		let reader = new FileReader();
 		if (file) {
-				reader.readAsDataURL(file);
-			reader.onload = async () => {
-				let Base64 : any = await reader.result;
-				await setPicturePathBase64(Base64);
-				console.log("not error: ", picturePathBase64);
-			};
-			reader.onerror = (error) => {
-				console.log("error: ", error);
-			};
+			reader.readAsDataURL(file);
+			try {
+				reader.onload = () => {
+					let Base64: any = reader.result;
+					dispatch(setPicturePathBase64(Base64));
+					console.log("not error: ", picturePathBase64);
+				};
+				reader.onerror = (error) => {
+					console.log("error: ", error);
+				};
+			} catch (error) {
+				console.log(error);
+			}
 		}
 	};
+
 	useEffect(() => {
 		if (isSuccess) {
 			navigate("/home");
@@ -119,7 +121,11 @@ const Form = () => {
 		// 		setFieldValue,
 		// 		resetForm,
 		// 	}) => (
-		<form onSubmit={handleSubmit}>
+		<form
+			onSubmit={(e: any) => {
+				e.preventDefault();
+				handleSubmit();
+			}}>
 			<Box
 				display="grid"
 				gap="30px"
@@ -193,11 +199,10 @@ const Form = () => {
 						onDone={handleDone}
 					/> */}
 							<Dropzone
-								acceptedFiles=".jpeg, .jpg, .png"
+								acceptedFiles={".jpeg, .jpg, .png"}
 								onDrop={(acceptedFiles: any) => {
 									encodeBase64(acceptedFiles[0]);
-									setPicturePath(acceptedFiles[0]);
-									console.log(acceptedFiles[0]);
+									picturePathBase64 && setPicturePath(acceptedFiles[0]);
 									// setFieldValue("picture", acceptedFiles[0])
 								}}
 								multiple={false}>

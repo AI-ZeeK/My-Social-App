@@ -33,7 +33,9 @@ const Form = () => {
 	const [pageType, setPageType] = useState("login");
 	const isLogin = pageType === "login";
 	const isRegister = pageType === "register";
-	const [picturePath, setPicturePath] = useState(null);
+	const [count, setCount] = useState(0);
+	const [cool, setCool] = useState(false);
+	const [picturePath, setPicturePath]: any = useState(null);
 	// const [picturePathBase64, setPicturePathBase64] = useState<string | null>(
 	// 	null
 	// );
@@ -81,6 +83,7 @@ const Form = () => {
 	const handleChange = (e: any) => {
 		setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 	};
+
 	const encodeBase64 = (file: any) => {
 		let reader = new FileReader();
 		if (file) {
@@ -88,6 +91,7 @@ const Form = () => {
 			try {
 				reader.onload = () => {
 					let Base64: any = reader.result;
+
 					dispatch(setPicturePathBase64(Base64));
 					console.log("not error: ", picturePathBase64);
 				};
@@ -199,7 +203,7 @@ const Form = () => {
 						onDone={handleDone}
 					/> */}
 							<Dropzone
-								acceptedFiles={".jpeg, .jpg, .png"}
+								// acceptedFiles={".jpeg, .jpg, .png"}
 								onDrop={(acceptedFiles: any) => {
 									encodeBase64(acceptedFiles[0]);
 									picturePathBase64 && setPicturePath(acceptedFiles[0]);

@@ -154,21 +154,30 @@ const ApiSlice = createSlice({
 		builder
 			.addCase(loginPost.pending, (state) => {
 				state.isLoading = true;
-				console.log("isError jdv,dfvndf");
+				console.log("Pending jdv,dfvndf");
 			})
 			.addCase(loginPost.fulfilled, (state, { payload }) => {
 				state.isLoading = false;
-				state.isSuccess = true;
-				state.user = payload.user;
-				state.token = payload.token;
-				localStorage.setItem("token", JSON.stringify(state.token));
-				localStorage.setItem("user", JSON.stringify(state.user));
-				console.log("isSuccess vndn", state.token, state.user);
+
+				if (payload.msg) {
+					state.isLoading = false;
+					state.isError = true;
+					state.message = payload.msg;
+					console.log("Rejected vndn", state.token, state.user, payload.msg);
+				}
+				if (!payload.msg) {
+					state.isSuccess = true;
+					state.user = payload.user;
+					state.token = payload.token;
+					localStorage.setItem("token", JSON.stringify(state.token));
+					localStorage.setItem("user", JSON.stringify(state.user));
+					console.log("isSuccess vndn", state.token, state.user, payload);
+				}
 			})
 			.addCase(loginPost.rejected, (state, action) => {
 				state.isLoading = false;
 				state.isError = true;
-				state.message = action.payload;
+				state.message = action.payload.msg;
 				state.user = [];
 				console.log("isRejected jdfvjdfvkfn");
 			});

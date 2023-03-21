@@ -110,8 +110,8 @@ const MyPostWidget = ({ picturePath }: any) => {
 
 	useEffect(() => {
 		encodeBase64();
-	  }, [encodeBase64]);
-	  
+	}, [encodeBase64]);
+
 	return (
 		<WidgetWrapper>
 			<FlexBetween gap="1.5rem">
@@ -135,7 +135,7 @@ const MyPostWidget = ({ picturePath }: any) => {
 					mt="1rem"
 					p="1rem">
 					<Dropzone
-						acceptedFiles=".jpg,.jpeg,.png"
+						// acceptedFiles=".jpg,.jpeg,.png"
 						multiple={false}
 						onDrop={(acceptedFiles: any) => {
 							setFile(acceptedFiles[0]);

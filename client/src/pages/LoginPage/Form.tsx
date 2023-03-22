@@ -60,7 +60,7 @@ const Form = () => {
 				...xData,
 				["picturePath"]: picturePathBase64,
 			}));
-			console.log(userData, values, "new regggs");
+			console.log(userData, values, "new regggs", xData);
 
 			userData && dispatch(registerPost(userData));
 		} catch (error) {
@@ -84,16 +84,17 @@ const Form = () => {
 		setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 	};
 
-	const encodeBase64 = (file: any) => {
-		let reader = new FileReader();
+	const encodeBase64 = async (file: any) => {
+		let reader = await new FileReader();
 		if (file) {
 			reader.readAsDataURL(file);
 			try {
-				reader.onload = () => {
-					let Base64: any = reader.result;
-
+				reader.onload =async () => {
+					let Base64: any = await reader.result;
 					dispatch(setPicturePathBase64(Base64));
-					console.log("not error: ", picturePathBase64);
+					setCool(true)
+					setCount((prev) => prev +  1)
+					console.log("not error: ", picturePathBase64, cool, count);
 				};
 				reader.onerror = (error) => {
 					console.log("error: ", error);

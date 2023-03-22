@@ -6,34 +6,34 @@ import { setFriends } from "../state/AppSlice";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./widgets/UserImageWidget";
 
-const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
+const Friend = ({ friendId, name, subtitle, userPicturePath }: any) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const { _id } = useSelector((state: any) => state.user);
 	const token = useSelector((state: any) => state.token);
 	const friends = useSelector((state: any) => state.user.friends);
 
-	const { palette } = useTheme();
+	const { palette }: any = useTheme();
 	const primaryLight = palette.primary.light;
 	const primaryDark = palette.primary.dark;
 	const main = palette.neutral.main;
 	const medium = palette.neutral.medium;
 
-	const isFriend = friends.find((friend) => friend._id === friendId);
+	const isFriend = friends.find((friend: any) => friend._id === friendId);
 
 	const patchFriend = async () => {
-		const response = await fetch(
-			`http://localhost:5000/users/${_id}/${friendId}`,
-			{
-				method: "PATCH",
-				headers: {
-					Authorization: `Bearer ${token}`,
-					"Content-Type": "application/json",
-				},
-			}
-		);
-		const data = await response.json();
-		dispatch(setFriends({ friends: data }));
+		// const response = await fetch(
+		// 	`http://localhost:5000/users/${_id}/${friendId}`,
+		// 	{
+		// 		method: "PATCH",
+		// 		headers: {
+		// 			Authorization: `Bearer ${token}`,
+		// 			"Content-Type": "application/json",
+		// 		},
+		// 	}
+		// );
+		// const data = await response.json();
+		// dispatch(setFriends({ friends: data }));
 	};
 
 	return (

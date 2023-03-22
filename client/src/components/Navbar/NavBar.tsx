@@ -32,7 +32,7 @@ const NavBar = (props: Props) => {
 	const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const {user} = useSelector((state: any) => state);
+	const { user } = useSelector((state: any) => state);
 	const isNonMobileScreens = useMediaQuery("(min-width : 1000px)");
 	const theme: any = useTheme();
 	const neutralLight = theme.palette.neutral.light;
@@ -81,7 +81,7 @@ const NavBar = (props: Props) => {
 						<Message sx={{ fontSize: "25px" }} />
 						<Notifications sx={{ fontSize: "25px" }} />
 						<Help sx={{ fontSize: "25px" }} />
-						<FormControl variant="standard" value={fullName}>
+						<FormControl component="div" variant="standard" value={fullName}>
 							<Select
 								value={fullName}
 								sx={{
@@ -174,8 +174,8 @@ const NavBar = (props: Props) => {
 									</MenuItem>
 									<MenuItem
 										onClick={() => {
-											dispatch(setLogout())
-										navigate('/')
+											dispatch(setLogout());
+											navigate("/");
 										}}
 										value={fullName}>
 										Log Out

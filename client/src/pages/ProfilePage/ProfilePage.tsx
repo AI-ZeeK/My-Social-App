@@ -2,25 +2,26 @@ import { Box, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import NavBar from "../../components/Navbar/Navbar";
+import NavBar from "../../components/Navbar/NavBar";
 import FriendListWidget from "../widget/FriendListWidget";
 import MyPostWidget from "../widget/MyPostWidget";
 import PostsWidget from "../widget/PostsWidget";
 import UserWidget from "../widget/UserWidget";
 
 const ProfilePage = () => {
-	const [user, setUser] = useState(null);
+	// const [user, setUser] = useState(null);
 	const { userId } = useParams();
 	const token = useSelector((state: any) => state.token);
+	const user = useSelector((state: any) => state.user);
 	const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
 
 	const getUser = async () => {
-		const response = await fetch(`https://my-social-app-gqkj.onrender.com/users/${userId}`, {
-			method: "GET",
-			headers: { Authorization: `Bearer ${token}` },
-		});
-		const data = await response.json();
-		setUser(data);
+		// const response = await fetch(`https://my-social-app-gqkj.onrender.com/users/${userId}`, {
+		// 	method: "GET",
+		// 	headers: { Authorization: `Bearer ${token}` },
+		// });
+		// const data = await response.json();
+		// setUser(data);
 	};
 
 	useEffect(() => {
@@ -31,7 +32,7 @@ const ProfilePage = () => {
 
 	return (
 		<Box>
-			<Navbar />
+			<NavBar />
 			<Box
 				width="100%"
 				padding="2rem 6%"

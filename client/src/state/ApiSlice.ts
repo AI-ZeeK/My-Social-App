@@ -132,19 +132,19 @@ const ApiSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder.addCase(registerPost.pending, (state) => {
-			console.log("isError jdv,dfvndf");
+			console.log("isPending registerPost");
 			state.isLoading = true;
-		});
-		builder.addCase(registerPost.fulfilled, (state, { payload }) => {
+			})
+			.addCase(registerPost.fulfilled, (state, { payload }) => {
 			state.isLoading = false;
 			state.isSuccess = true;
 			state.user = payload.savedUser;
 			state.token = payload.token;
 			localStorage.setItem("token", JSON.stringify(state.token));
 			localStorage.setItem("user", JSON.stringify(state.user));
-			console.log("isSuccess vndn", payload, state.token, state.user);
-		});
-		builder.addCase(registerPost.rejected, (state, { payload }) => {
+			console.log("isSuccess registerPost", payload, state.token, state.user);
+			})
+			.addCase(registerPost.rejected, (state, { payload }) => {
 			console.log("isRejected jdfvjdfvkfn", payload);
 			state.isLoading = false;
 			state.isError = true;
@@ -154,7 +154,7 @@ const ApiSlice = createSlice({
 		builder
 			.addCase(loginPost.pending, (state) => {
 				state.isLoading = true;
-				console.log("Pending jdv,dfvndf");
+				console.log("Pending registerPost");
 			})
 			.addCase(loginPost.fulfilled, (state, { payload }) => {
 				state.isLoading = false;
@@ -163,7 +163,7 @@ const ApiSlice = createSlice({
 					state.isLoading = false;
 					state.isError = true;
 					state.message = payload.msg;
-					console.log("Rejected vndn", state.token, state.user, payload.msg);
+					console.log("Rejected loginPost", state.token, state.user, payload.msg);
 				}
 				if (!payload.msg) {
 					state.isSuccess = true;
@@ -171,7 +171,7 @@ const ApiSlice = createSlice({
 					state.token = payload.token;
 					localStorage.setItem("token", JSON.stringify(state.token));
 					localStorage.setItem("user", JSON.stringify(state.user));
-					console.log("isSuccess vndn", state.token, state.user, payload);
+					console.log("isSuccess loginPost", state.token, state.user, payload);
 				}
 			})
 			.addCase(loginPost.rejected, (state, action) => {
@@ -179,17 +179,17 @@ const ApiSlice = createSlice({
 				state.isError = true;
 				state.message = action.payload.msg;
 				state.user = [];
-				console.log("isRejected jdfvjdfvkfn");
+				console.log("isRejected loginPost");
 			});
 		builder
 			.addCase(socialPost.pending, (state) => {
 				state.postState.isLoading = true;
-				console.log("isError Social Post");
+				console.log("isPending Social Post");
 			})
 			.addCase(socialPost.fulfilled, (state, { payload }) => {
 				state.postState.isLoading = false;
 				state.postState.isSuccess = true;
-				state.posts = [...state.posts, payload];
+				state.posts =  payload;
 				console.log("is Success  Social Post");
 			})
 			.addCase(socialPost.rejected, (state, action) => {
@@ -202,7 +202,7 @@ const ApiSlice = createSlice({
 		builder
 			.addCase(getSocialPost.pending, (state) => {
 				state.postState.isLoading = true;
-				console.log("isError GET Social Post");
+				console.log("isPending GET Social Post");
 			})
 			.addCase(getSocialPost.fulfilled, (state, { payload }) => {
 				state.postState.isLoading = false;

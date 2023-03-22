@@ -28,6 +28,9 @@ export const PostApi = async (formData: any, token: any) => {
 		headers: {
 			Authorization: `Bearer ${token}`,
 			"Access-Control-Allow-Origin": "*",
+			maxBodyLength: 10000000,
+			maxContentLength: 10000000,
+			emulateJSON: true,
 		},
 	});
 

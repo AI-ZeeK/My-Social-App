@@ -149,6 +149,22 @@ export const getFriends: any = createAsyncThunk(
     }
   }
 );
+export const patchFriend: any = createAsyncThunk(
+  "patchFriends",
+  async ([userId, friendId, token]: any, thunkAPI) => {
+    try {
+      return await ApiService.patchFriendApi(userId, friendId, token);
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 const ApiSlice = createSlice({
   name: "APISERVICE",
@@ -289,6 +305,20 @@ const ApiSlice = createSlice({
         console.log("is Success Friends Post", payload);
       })
       .addCase(getFriends.rejected, (state, { action }) => {
+        console.log("isRejected GET Friends Post");
+      });
+    builder
+      .addCase(patchFriend.pending, (state) => {
+        state.friendsState.isLoading = true;
+        console.log("isPending GET Friends Post");
+      })
+      .addCase(patchFriend.fulfilled, (state, { payload }) => {
+        state.friendsState.isLoading = false;
+        state.friendsState.isSuccess = true;
+        // state.friends = payload;
+        console.log("is Success Friends Post", payload);
+      })
+      .addCase(patchFriend.rejected, (state, { action }) => {
         console.log("isRejected GET Friends Post");
       });
   },

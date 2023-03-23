@@ -27,8 +27,8 @@ const PostWidget = ({
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
   const token = useSelector((state: any) => state.token);
-  const loggedInUserId = useSelector((state: any) => state.user._id);
-  const isLiked = Boolean(likes[loggedInUserId]);
+  const { _id } = useSelector((state: any) => state.user);
+  const isLiked = Boolean(likes[_id]);
   const likeCount = Object.keys(likes).length;
 
   const { palette }: any = useTheme();
@@ -36,12 +36,21 @@ const PostWidget = ({
   const primary = palette.primary.main;
 
   const patchLike = async () => {
-    //
-    //
-    dispatch(setLike([loggedInUserId, postId, token]));
+    //   const response = await fetch(
+    //     `https://my-social-app-gqkj.onrender.com/posts/${postId}/like`,
+    //     {
+    //       method: "PATCH",
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({ userId: loggedInUserId }),
+    //     }
+    //   );
+    dispatch(setLike([_id, postId, token]));
+    // const updatedPost = await response.json();
   };
   // console.log(picturePath);
-
   return (
     <WidgetWrapper m="2rem 0">
       <Friend

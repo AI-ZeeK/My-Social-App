@@ -103,13 +103,17 @@ export const patchLikeAPI = async (
   postId: string,
   token: string
 ) => {
-  console.log(userId, "userId", postId, "postId");
-  const { data } = await API.patch(`/posts/${postId}/like`, userId, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Access-Control-Allow-Origin": "*",
-    },
-  });
+  console.log(userId, "userId", postId, "postId", token);
+  const { data } = await API.patch(
+    `/posts/${postId}/like`,
+    JSON.stringify(userId),
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Access-Control-Allow-Origin": "*",
+      },
+    }
+  );
 
   console.log(data);
   return data;

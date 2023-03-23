@@ -125,7 +125,7 @@ const NavBar = (props: Props) => {
 						zIndex={10}
 						maxWidth="500px"
 						minWidth="300px"
-						backgroundColor={background}>
+						bgColor={background}>
 						{/* {Close Icons} */}
 						<Box display="flex" justifyContent="flex-end" p="1rem">
 							<IconButton
@@ -152,7 +152,7 @@ const NavBar = (props: Props) => {
 							<Message sx={{ fontSize: "25px" }} />
 							<Notifications sx={{ fontSize: "25px" }} />
 							<Help sx={{ fontSize: "25px" }} />
-							<FormControl variant="standard" value={fullName}>
+							<FormControl  component="div" variant="standard" value={fullName}>
 								<Select
 									value={fullName}
 									sx={{

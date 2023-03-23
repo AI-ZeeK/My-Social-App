@@ -81,10 +81,11 @@ export const getFriendsApi = async (userId: string, token: string) => {
 // ?Patch Friends
 export const patchFriendApi = async (
   userId: string,
-  friend: any,
+  friendId: any,
   token: string
 ) => {
-  const { data } = await API.patch(`/users/${userId}/${friend}`, {
+  console.log(userId);
+  const { data } = await API.patch(`/user/${userId}/${friendId}`, "", {
     headers: {
       Authorization: `Bearer ${token}`,
       "Access-Control-Allow-Origin": "*",

@@ -321,7 +321,7 @@ const ApiSlice = createSlice({
         state.friends = payload;
         console.log("is Success Friends Post", payload);
       })
-      .addCase(getFriends.rejected, (state, { action }) => {
+      .addCase(getFriends.rejected, (state, { payload }) => {
         console.log("isRejected GET Friends Post");
       });
     builder

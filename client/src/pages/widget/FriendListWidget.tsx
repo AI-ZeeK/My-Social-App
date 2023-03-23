@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import WidgetWrapper from "../../components/widgets/WidgetWrapper";
 import Friend from "../../components/Friend";
 import { setFriends } from "../../state/AppSlice";
-import { getFriends } from "../../state/ApiSlice";
+import { getFriends as getUserFriends } from "../../state/ApiSlice";
 
 const FriendListWidget = ({ userId }: any) => {
   const dispatch = useDispatch();
@@ -12,17 +12,17 @@ const FriendListWidget = ({ userId }: any) => {
   const token = useSelector((state: any) => state.token);
   const friends = useSelector((state: any) => state.user.friends);
 
-  // const getFriends = async () => {
-  // 	const response = await fetch(
-  // 	// 	`https://my-social-app-gqkj.onrender.com/users/${userId}/friends`,
-  // 	// 	{
-  // 	// 		method: "GET",
-  // 	// 		headers: { Authorization: `Bearer ${token}` },
-  // 	// 	}
-  // 	);
-  // 	const data = await response.json();
-  // 	dispatch(setFriends({ friends: data }));
-  // };
+  const getFriends = async () => {
+    // const response = await fetch(
+    // 	`https://my-social-app-gqkj.onrender.com/users/${userId}/friends`,
+    // 	{
+    // 		method: "GET",
+    // 		headers: { Authorization: `Bearer ${token}` },
+    // 	}
+    // );
+    // 	const data = await response.json();
+    dispatch(getUserFriends([userId, token]));
+  };
 
   useEffect(() => {
     getFriends();

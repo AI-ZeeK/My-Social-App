@@ -2,12 +2,12 @@
 My-Social-app is a full-stack web application built using the MERN stack and Material-UI. The application provides major CRUD functionalities and secure routing on both the frontend and backend with authentication implemented. Redux Toolkit is used for state management.
 
 ## Features
-User authentication using JWT tokens
-Create, read, update, and delete posts
-Like and comment on posts
-Follow and unfollow other users
-Edit profile information
-User search functionality
+- User authentication using JWT tokens
+- Create, read, update, and delete posts
+- Like and comment on posts
+- Follow and unfollow other users
+- Edit profile information
+- User search functionality
 Technologies Used
 - MongoDB
 - Express.js
@@ -26,7 +26,7 @@ Clone the repository
 - Install client dependencies by running npm install in the client directory
 - Start the server by running npm run server
 - Start the client by running npm run client
-- Open http://localhost:3000 to view the app in the browser.
+- Open [My-Social-App](https://my-social-app-three.vercel.app/) to view the app in the browser.
 ### Future Improvements
 - Add chat functionality
 - Implement server-side pagination for posts

@@ -332,7 +332,7 @@ const ApiSlice = createSlice({
       .addCase(patchFriend.fulfilled, (state, { payload }) => {
         state.friendsState.isLoading = false;
         state.friendsState.isSuccess = true;
-        // state.friends = payload;
+        state.friends = payload;
         console.log("is Success Friends Post", payload);
       })
       .addCase(patchFriend.rejected, (state, { action }) => {

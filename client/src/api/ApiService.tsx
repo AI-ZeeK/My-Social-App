@@ -54,6 +54,7 @@ export const getPostApi = async (token: string) => {
 };
 // ?Get User Posts
 export const getUserSocialPostsApi = async (userId: string, token: string) => {
+  console.log(userId);
   const { data } = await API.get(`/posts/${userId}/posts`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -86,6 +87,24 @@ export const patchFriendApi = async (
 ) => {
   console.log(userId);
   const { data } = await API.patch(`/user/${userId}/${friendId}`, "", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Access-Control-Allow-Origin": "*",
+    },
+  });
+
+  console.log(data);
+  return data;
+};
+
+// ?Patch Friends
+export const patchLikeAPI = async (
+  userId: any,
+  postId: string,
+  token: string
+) => {
+  console.log(userId, "userId", postId, "postId");
+  const { data } = await API.patch(`/posts/${postId}/like`, userId, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Access-Control-Allow-Origin": "*",

@@ -68,7 +68,8 @@ export const getUserSocialPostsApi = async (userId: string, token: string) => {
 
 // ?Get Friends
 export const getFriendsApi = async (userId: string, token: string) => {
-  const { data } = await API.get(`/posts/${userId}/friends`, {
+  console.log(userId, token);
+  const { data } = await API.get(`/user/${userId}/friends`, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Access-Control-Allow-Origin": "*",

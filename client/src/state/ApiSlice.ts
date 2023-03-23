@@ -346,7 +346,7 @@ const ApiSlice = createSlice({
       .addCase(patchLike.fulfilled, (state, { payload }) => {
         state.friendsState.isLoading = false;
         state.friendsState.isSuccess = true;
-        // state.friends = payload;
+        state.friends = payload;
         console.log("is Success Friends Like Patch", payload);
       })
       .addCase(patchLike.rejected, (state, { action }) => {

@@ -151,6 +151,7 @@ const Form = () => {
         </div>
       )}
       <form
+        className="form-box"
         onSubmit={(e: any) => {
           e.preventDefault();
           handleSubmit();
@@ -259,6 +260,7 @@ const Form = () => {
           <TextField
             label="Email"
             // onBlur={handleBlur}
+            id={"password"}
             onChange={handleChange}
             value={values.email}
             name="email"
@@ -269,6 +271,7 @@ const Form = () => {
           <TextField
             label="Password"
             type="password"
+            id={"password"}
             // onBlur={handleBlur}
             onChange={handleChange}
             value={values.password}

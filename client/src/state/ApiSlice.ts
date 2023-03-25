@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as ApiService from "../api/ApiService";
+import { initialValueType } from "../pages/LoginPage/Form";
 
 interface initialProps {
   isLoading: boolean;
@@ -54,7 +55,7 @@ const initialState: initialProps = {
 };
 export const registerPost: any = createAsyncThunk(
   "auth/register",
-  async (userData: any, thunkAPI) => {
+  async (userData: initialValueType, thunkAPI) => {
     try {
       return await ApiService.registerPostApi(userData);
     } catch (error: any) {
@@ -71,7 +72,7 @@ export const registerPost: any = createAsyncThunk(
 );
 export const loginPost: any = createAsyncThunk(
   "posts",
-  async (userData: any, thunkAPI) => {
+  async (userData: initialValueType, thunkAPI) => {
     try {
       return await ApiService.loginPostApi(userData);
     } catch (error: any) {

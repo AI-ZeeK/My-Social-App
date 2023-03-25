@@ -17,8 +17,16 @@ import FlexBetween from "../../components/FlexBetween";
 import Dropzone from "react-dropzone";
 import LinearProgress from "@mui/material/LinearProgress";
 // import FileBase64 from "react-file-base64";
-
-const initialValuesRegister = {
+export interface initialValueType {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  location: string;
+  occupation: string;
+  picturePath?: string;
+}
+const initialValuesRegister: initialValueType = {
   firstName: "",
   lastName: "",
   email: "",
@@ -29,19 +37,21 @@ const initialValuesRegister = {
 };
 
 const Form = () => {
-  const [pageType, setPageType] = useState("login");
-  const isLogin = pageType === "login";
-  const isRegister = pageType === "register";
+  const [pageType, setPageType] = useState<string>("login");
+  const isLogin: boolean = pageType === "login";
+  const isRegister: boolean = pageType === "register";
   const [count, setCount] = useState(0);
   const [cool, setCool] = useState(false);
   const [picturePath, setPicturePath]: any = useState(null);
+  const [isLoad, setIsLoad] = useState<boolean>(false);
+  const [isErr, setIsErr] = useState<boolean>(false);
   const [picturePathBase64, setPicturePathBase64] = useState<string | null>(
     null
   );
-  const [formData, setFormData] = useState(initialValuesRegister);
-  const [isLoad, setIsLoad] = useState(false);
-  const [isErr, setIsErr] = useState(false);
-  const [userData, setUserData] = useState({
+  const [formData, setFormData] = useState<initialValueType>(
+    initialValuesRegister
+  );
+  const [userData, setUserData] = useState<initialValueType>({
     firstName: "",
     lastName: "",
     email: "",
@@ -50,7 +60,7 @@ const Form = () => {
     occupation: "",
     picturePath: "",
   });
-  const values = formData;
+  const values: initialValueType = formData;
   const { palette }: any = useTheme();
   const { isError, isSuccess, isLoading, message }: any = useSelector(
     (state) => state
@@ -62,9 +72,10 @@ const Form = () => {
   const register = async (values: any) => {
     try {
       const formData = new FormData();
-      const xData = await Object.assign(formData, { ...values });
-      console.log(Object.values(xData), Object.keys(xData));
-      setUserData((prev: any) => ({
+      const xData = await Object.assign(formData, {
+        ...values,
+      });
+      setUserData((prev: initialValueType) => ({
         ...prev,
         ...xData,
         ["picturePath"]: picturePathBase64,
@@ -76,7 +87,7 @@ const Form = () => {
       console.log(error, "new errrorr");
     }
   };
-  const login = async (values: any) => {
+  const login = async (values: initialValueType) => {
     await dispatch(loginPost(values));
   };
   // const handleFormSubmit = async (_values: any, onSubmitProps: any) => {
@@ -90,12 +101,11 @@ const Form = () => {
     if (isRegister) await register(values);
     if (isLogin) await login(values);
   };
-  const handleChange = (e: any) => {
+  const handleChange = (e: { target: { name: string; value: string } }) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(formData);
   };
 
-  const encodeBase64 = (file: any) => {
+  const encodeBase64 = (file: Blob) => {
     let reader = new FileReader();
     if (file) {
       reader.readAsDataURL(file);
@@ -103,8 +113,7 @@ const Form = () => {
         reader.onload = async () => {
           let Base64: any = reader.result;
           setPicturePathBase64(Base64);
-          setCool(true);
-          setCount((prev) => prev + 1);
+
           console.log("not error: ", picturePathBase64, cool, count);
         };
         reader.onerror = (error) => {
@@ -115,12 +124,17 @@ const Form = () => {
       }
     }
   };
+  useEffect(() => {
+    setUserData(userData);
+    setPicturePathBase64(picturePathBase64);
+    console.log("red");
+  }, []);
 
   useEffect(() => {
     if (isSuccess) {
       navigate("/home");
       setIsErr(false);
-      setIsErr(false);
+      setIsLoad(false);
     }
     if (isLoading) {
       setIsLoad(true);
@@ -183,9 +197,38 @@ const Form = () => {
             alignItems: "center",
             zIndex: 10,
           }}>
-          <h1 style={{ fontSize: "2.4rem", color: "red", zIndex: "20" }}>
-            {message}!
-          </h1>
+          <div
+            style={{
+              background: "#fff",
+              padding: "1rem .6rem",
+              borderRadius: ".4rem",
+              minWidth: "18rem",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              overflow: "hidden",
+            }}>
+            <small
+              style={{
+                paddingBottom: ".4rem",
+                textTransform: "capitalize",
+                letterSpacing: "2px",
+              }}>
+              Error Message
+            </small>
+            <div
+              style={{
+                width: "140%",
+                height: "1px",
+                background: "#ccc",
+                position: "relative",
+                left: "-2rem",
+              }}></div>
+            <h1 style={{ fontSize: "1.6rem", color: "red", zIndex: "20" }}>
+              {message}!!!
+            </h1>
+          </div>
         </div>
       )}
       <form
@@ -253,19 +296,6 @@ const Form = () => {
                 borderRadius="5px"
                 p="1rem"
                 border={`1px solid ${palette.neutral.medium}`}>
-                {/* <FileBase64
-										style={{display: 'none'}}
-										className='display-none'
-										
-						type="file"
-						value={picturePath}
-						onChange={(e) => { 	
-						setPicturePath( e.target.files)
-						} }
-						placeholder="Select Files"
-						multiple={false}
-						onDone={handleDone}
-					/> */}
                 <Dropzone
                   // acceptedFiles={".jpeg, .jpg, .png"}
                   onDrop={(acceptedFiles: any) => {

@@ -1,10 +1,11 @@
 import axios from "axios";
+import { initialValueType } from "../pages/LoginPage/Form";
 
 const API = axios.create({
   baseURL: `https://my-social-app-gqkj.onrender.com`,
 });
 //  Auth Register
-export const registerPostApi = async (formData: any) => {
+export const registerPostApi = async (formData: initialValueType) => {
   console.log(formData);
   const { data } = await API.post("/auth/register", formData, {
     headers: {
@@ -18,7 +19,7 @@ export const registerPostApi = async (formData: any) => {
   return data;
 };
 // Auth Login
-export const loginPostApi = async (formData: any) => {
+export const loginPostApi = async (formData: initialValueType) => {
   const { data } = await API.post("/auth/login", formData);
 
   return data;

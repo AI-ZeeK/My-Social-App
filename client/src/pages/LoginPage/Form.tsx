@@ -43,6 +43,7 @@ const Form = () => {
   // );
   const [formData, setFormData] = useState(initialValuesRegister);
   const [isLoad, setIsLoad] = useState(false);
+  const [isErr, setIsErr] = useState(false);
   const [userData, setUserData] = useState(null);
   const values = formData;
   const { palette }: any = useTheme();
@@ -53,10 +54,10 @@ const Form = () => {
   const navigate = useNavigate();
   const isNonMobile = useMediaQuery("(min-width: 600px");
 
-  const register = (values: any) => {
+  const register = async (values: any) => {
     try {
       const formData = new FormData();
-      const xData = Object.assign(formData, { ...values });
+      const xData = await Object.assign(formData, { ...values });
 
       setUserData((prev: any) => ({
         ...prev,
@@ -65,7 +66,7 @@ const Form = () => {
       }));
       console.log(userData, values, "new regggs", xData);
 
-      userData && dispatch(registerPost(userData));
+      userData && (await dispatch(registerPost(userData)));
     } catch (error) {
       console.log(error, "new errrorr");
     }
@@ -87,13 +88,13 @@ const Form = () => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const encodeBase64 = async (file: any) => {
-    let reader = await new FileReader();
+  const encodeBase64 = (file: any) => {
+    let reader = new FileReader();
     if (file) {
       reader.readAsDataURL(file);
       try {
         reader.onload = async () => {
-          let Base64: any = await reader.result;
+          let Base64: any = reader.result;
           dispatch(setPicturePathBase64(Base64));
           setCool(true);
           setCount((prev) => prev + 1);
@@ -111,11 +112,22 @@ const Form = () => {
   useEffect(() => {
     if (isSuccess) {
       navigate("/home");
+      setIsErr(false);
+      setIsErr(false);
     }
     if (isLoading) {
       setIsLoad(true);
+      setIsErr(false);
     }
-  }, [isSuccess, isLoading]);
+    if (isError) {
+      setIsLoad(false);
+      setIsErr(true);
+      setTimeout(() => {
+        setIsErr(false);
+      }, 3000);
+      // return <h1>Failed</h1>;
+    }
+  }, [isSuccess, isLoading, isError]);
 
   return (
     // <Formik
@@ -148,6 +160,25 @@ const Form = () => {
             zIndex: 10,
           }}>
           <CircularProgress style={{ zIndex: 20 }} />
+        </div>
+      )}
+      {isErr && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: "0%",
+            left: "0%",
+            width: "100vw",
+            background: "#00000044",
+            height: "100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 10,
+          }}>
+          <h1 style={{ fontSize: "2.4rem", color: "red", zIndex: "20" }}>
+            Failed!!!
+          </h1>
         </div>
       )}
       <form

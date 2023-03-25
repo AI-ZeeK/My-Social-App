@@ -212,10 +212,12 @@ const ApiSlice = createSlice({
       .addCase(registerPost.pending, (state) => {
         console.log("isPending registerPost");
         state.isLoading = true;
+        state.isError = false;
       })
       .addCase(registerPost.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = true;
+        state.isError = false;
         state.user = payload.savedUser;
         state.token = payload.token;
         localStorage.setItem("token", JSON.stringify(state.token));
@@ -226,12 +228,15 @@ const ApiSlice = createSlice({
         console.log("isRejected jdfvjdfvkfn", payload);
         state.isLoading = false;
         state.isError = true;
+
         state.message = payload;
         // state.user = null;
       });
     builder
       .addCase(loginPost.pending, (state) => {
         state.isLoading = true;
+        state.isError = false;
+
         console.log("Pending registerPost");
       })
       .addCase(loginPost.fulfilled, (state, { payload }) => {
@@ -249,6 +254,7 @@ const ApiSlice = createSlice({
           );
         }
         if (!payload.msg) {
+          state.isError = false;
           state.isSuccess = true;
           state.user = payload.user;
           state.token = payload.token;

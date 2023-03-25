@@ -12,11 +12,7 @@ import {
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  registerPost,
-  loginPost,
-  setPicturePathBase64,
-} from "../../state/ApiSlice";
+import { registerPost, loginPost } from "../../state/ApiSlice";
 import FlexBetween from "../../components/FlexBetween";
 import Dropzone from "react-dropzone";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -29,6 +25,7 @@ const initialValuesRegister = {
   password: "",
   location: "",
   occupation: "",
+  picturePath: "",
 };
 
 const Form = () => {
@@ -38,16 +35,24 @@ const Form = () => {
   const [count, setCount] = useState(0);
   const [cool, setCool] = useState(false);
   const [picturePath, setPicturePath]: any = useState(null);
-  // const [picturePathBase64, setPicturePathBase64] = useState<string | null>(
-  // 	null
-  // );
+  const [picturePathBase64, setPicturePathBase64] = useState<string | null>(
+    null
+  );
   const [formData, setFormData] = useState(initialValuesRegister);
   const [isLoad, setIsLoad] = useState(false);
   const [isErr, setIsErr] = useState(false);
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    location: "",
+    occupation: "",
+    picturePath: "",
+  });
   const values = formData;
   const { palette }: any = useTheme();
-  const { isError, isSuccess, isLoading, picturePathBase64 }: any = useSelector(
+  const { isError, isSuccess, isLoading, message }: any = useSelector(
     (state) => state
   );
   const dispatch = useDispatch();
@@ -58,7 +63,7 @@ const Form = () => {
     try {
       const formData = new FormData();
       const xData = await Object.assign(formData, { ...values });
-
+      console.log(Object.values(xData), Object.keys(xData));
       setUserData((prev: any) => ({
         ...prev,
         ...xData,
@@ -81,11 +86,13 @@ const Form = () => {
   // };
   const handleSubmit = async () => {
     console.log("screen", isLogin, isRegister);
+    setUserData(formData);
     if (isRegister) await register(values);
     if (isLogin) await login(values);
   };
   const handleChange = (e: any) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    console.log(formData);
   };
 
   const encodeBase64 = (file: any) => {
@@ -95,7 +102,7 @@ const Form = () => {
       try {
         reader.onload = async () => {
           let Base64: any = reader.result;
-          dispatch(setPicturePathBase64(Base64));
+          setPicturePathBase64(Base64);
           setCool(true);
           setCount((prev) => prev + 1);
           console.log("not error: ", picturePathBase64, cool, count);
@@ -124,7 +131,7 @@ const Form = () => {
       setIsErr(true);
       setTimeout(() => {
         setIsErr(false);
-      }, 3000);
+      }, 2000);
       // return <h1>Failed</h1>;
     }
   }, [isSuccess, isLoading, isError]);
@@ -177,7 +184,7 @@ const Form = () => {
             zIndex: 10,
           }}>
           <h1 style={{ fontSize: "2.4rem", color: "red", zIndex: "20" }}>
-            Failed!!!
+            {message}!
           </h1>
         </div>
       )}

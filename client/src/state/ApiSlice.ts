@@ -10,7 +10,7 @@ interface initialProps {
   token: string | [];
   mode: string;
   message: string;
-  picturePathBase64: string | null;
+  // picturePathBase64: string | null;
   posts: any[];
   postState: {
     isLoading: boolean;
@@ -43,7 +43,7 @@ const initialState: initialProps = {
     isError: false,
     isSuccess: false,
   },
-  picturePathBase64: null,
+  // picturePathBase64: null,
   posts: [],
   friends: [],
   friendsState: {
@@ -203,9 +203,9 @@ const ApiSlice = createSlice({
     setMode: (state) => {
       state.mode = state.mode === "light" ? "dark" : "light";
     },
-    setPicturePathBase64: (state, { payload }) => {
-      state.picturePathBase64 = payload;
-    },
+    // setPicturePathBase64: (state, { payload }) => {
+    //   state.picturePathBase64 = payload;
+    // },
   },
   extraReducers: (builder) => {
     builder
@@ -263,12 +263,12 @@ const ApiSlice = createSlice({
           console.log("isSuccess loginPost", state.token, state.user, payload);
         }
       })
-      .addCase(loginPost.rejected, (state, action) => {
+      .addCase(loginPost.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.isError = true;
-        state.message = action.payload.msg;
+        state.message = payload;
         state.user = [];
-        console.log("isRejected loginPost");
+        console.log("isRejected loginPost", payload);
       });
     builder
       .addCase(socialPost.pending, (state) => {
@@ -361,6 +361,5 @@ const ApiSlice = createSlice({
   },
 });
 
-export const { reset, setLogout, setMode, setPicturePathBase64 } =
-  ApiSlice.actions;
+export const { reset, setLogout, setMode } = ApiSlice.actions;
 export default ApiSlice.reducer;

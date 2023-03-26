@@ -203,6 +203,7 @@ const Form = () => {
               padding: "1rem .6rem",
               borderRadius: ".4rem",
               minWidth: "18rem",
+              maxWidth: "80vw",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
@@ -230,7 +231,9 @@ const Form = () => {
                 fontSize: "1rem",
                 color: "red",
                 zIndex: "20",
-                paddingTop: ".4rem",
+                paddingTop: "1.4rem",
+                paddingBottom: ".6rem",
+                fontWeight: 300,
               }}>
               {message}!!!
             </h1>

@@ -225,7 +225,13 @@ const Form = () => {
                 position: "relative",
                 left: "-2rem",
               }}></div>
-            <h1 style={{ fontSize: "1rem", color: "red", zIndex: "20" }}>
+            <h1
+              style={{
+                fontSize: "1rem",
+                color: "red",
+                zIndex: "20",
+                paddingTop: ".4rem",
+              }}>
               {message}!!!
             </h1>
           </div>

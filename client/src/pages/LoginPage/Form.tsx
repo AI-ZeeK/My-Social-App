@@ -9,10 +9,10 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { registerPost, loginPost } from "../../state/ApiSlice";
+import {useState, useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {useLocation, useNavigate} from "react-router-dom";
+import {registerPost, loginPost, reset} from "../../state/ApiSlice";
 import FlexBetween from "../../components/FlexBetween";
 import Dropzone from "react-dropzone";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -61,12 +61,13 @@ const Form = () => {
     picturePath: "",
   });
   const values: initialValueType = formData;
-  const { palette }: any = useTheme();
-  const { isError, isSuccess, isLoading, message }: any = useSelector(
+  const {palette}: any = useTheme();
+  const {isError, isSuccess, isLoading, message}: any = useSelector(
     (state) => state
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const router = useLocation();
   const isNonMobile = useMediaQuery("(min-width: 600px");
 
   const register = async (values: any) => {
@@ -101,8 +102,8 @@ const Form = () => {
     if (isRegister) await register(values);
     if (isLogin) await login(values);
   };
-  const handleChange = (e: { target: { name: string; value: string } }) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleChange = (e: {target: {name: string; value: string}}) => {
+    setFormData((prev) => ({...prev, [e.target.name]: e.target.value}));
   };
 
   const encodeBase64 = (file: Blob) => {
@@ -148,6 +149,7 @@ const Form = () => {
       }, 2000);
       // return <h1>Failed</h1>;
     }
+    dispatch(reset());
   }, [isSuccess, isLoading, isError]);
 
   return (
@@ -179,8 +181,9 @@ const Form = () => {
             justifyContent: "center",
             alignItems: "center",
             zIndex: 10,
-          }}>
-          <CircularProgress style={{ zIndex: 20 }} />
+          }}
+        >
+          <CircularProgress style={{zIndex: 20}} />
         </div>
       )}
       {isErr && (
@@ -196,7 +199,8 @@ const Form = () => {
             justifyContent: "center",
             alignItems: "center",
             zIndex: 10,
-          }}>
+          }}
+        >
           <div
             style={{
               background: "#fff",
@@ -209,13 +213,15 @@ const Form = () => {
               justifyContent: "center",
               alignItems: "center",
               overflow: "hidden",
-            }}>
+            }}
+          >
             <small
               style={{
                 paddingBottom: ".4rem",
                 textTransform: "capitalize",
                 letterSpacing: "2px",
-              }}>
+              }}
+            >
               Error Message
             </small>
             <div
@@ -225,7 +231,8 @@ const Form = () => {
                 background: "#ccc",
                 position: "relative",
                 left: "-2rem",
-              }}></div>
+              }}
+            ></div>
             <h1
               style={{
                 fontSize: "1rem",
@@ -234,7 +241,8 @@ const Form = () => {
                 paddingTop: "1.4rem",
                 paddingBottom: ".6rem",
                 fontWeight: 300,
-              }}>
+              }}
+            >
               {message}!!!
             </h1>
           </div>
@@ -245,14 +253,16 @@ const Form = () => {
         onSubmit={(e: any) => {
           e.preventDefault();
           handleSubmit();
-        }}>
+        }}
+      >
         <Box
           display="grid"
           gap="30px"
           gridTemplateColumns="repeat(4, minmax(0, 1fr))"
           sx={{
-            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-          }}>
+            "& > div": {gridColumn: isNonMobile ? undefined : "span 4"},
+          }}
+        >
           {isRegister && (
             <>
               <TextField
@@ -265,7 +275,7 @@ const Form = () => {
                 // 	Boolean(touched.firstName) && Boolean(errors.firstName)
                 // }
                 // helperText={touched.firstName && errors.firstName}
-                sx={{ gridColumn: "span 2" }}
+                sx={{gridColumn: "span 2"}}
               />
 
               <TextField
@@ -276,7 +286,7 @@ const Form = () => {
                 name="lastName"
                 // error={Boolean(touched.lastName) && Boolean(errors.lastName)}
                 // helperText={touched.lastName && errors.lastName}
-                sx={{ gridColumn: "span 2" }}
+                sx={{gridColumn: "span 2"}}
               />
               <TextField
                 label="Location"
@@ -286,7 +296,7 @@ const Form = () => {
                 name="location"
                 // error={Boolean(touched.location) && Boolean(errors.location)}
                 // helperText={touched.location && errors.location}
-                sx={{ gridColumn: "span 2" }}
+                sx={{gridColumn: "span 2"}}
               />
               <TextField
                 label="Occupation"
@@ -298,13 +308,14 @@ const Form = () => {
                 // 	Boolean(touched.occupation) && Boolean(errors.occupation)
                 // }
                 // helperText={touched.occupation && errors.occupation}
-                sx={{ gridColumn: "span 2" }}
+                sx={{gridColumn: "span 2"}}
               />
               <Box
                 gridColumn="span 4"
                 borderRadius="5px"
                 p="1rem"
-                border={`1px solid ${palette.neutral.medium}`}>
+                border={`1px solid ${palette.neutral.medium}`}
+              >
                 <Dropzone
                   // acceptedFiles={".jpeg, .jpg, .png"}
                   onDrop={(acceptedFiles: any) => {
@@ -312,13 +323,15 @@ const Form = () => {
                     picturePathBase64 && setPicturePath(acceptedFiles[0]);
                     // setFieldValue("picture", acceptedFiles[0])
                   }}
-                  multiple={false}>
-                  {({ getRootProps, getInputProps }) => (
+                  multiple={false}
+                >
+                  {({getRootProps, getInputProps}) => (
                     <Box
                       {...getRootProps()}
                       border={`2px dashed ${palette.primary.main}`}
                       p="1rem"
-                      sx={{ "&:hover": { cursor: "pointer" } }}>
+                      sx={{"&:hover": {cursor: "pointer"}}}
+                    >
                       <input {...getInputProps()} />
                       {!picturePath ? (
                         <p>Add Picture Here</p>
@@ -343,7 +356,7 @@ const Form = () => {
             name="email"
             // error={Boolean(touched.email) && Boolean(errors.email)}
             // helperText={touched.email && errors.email}
-            sx={{ gridColumn: "span 4" }}
+            sx={{gridColumn: "span 4"}}
           />
           <TextField
             label="Password"
@@ -355,7 +368,7 @@ const Form = () => {
             name="password"
             // error={Boolean(touched.password) && Boolean(errors.password)}
             // helperText={touched.password && errors.password}
-            sx={{ gridColumn: "span 4" }}
+            sx={{gridColumn: "span 4"}}
           />
         </Box>
         {/* BUTTONS */}
@@ -368,8 +381,9 @@ const Form = () => {
               p: "1rem",
               backgroundColor: palette.primary.main,
               color: palette.background.default,
-              "&:hover": { color: palette.primary.main },
-            }}>
+              "&:hover": {color: palette.primary.main},
+            }}
+          >
             {isLogin ? "LOGIN" : "REGISTER"}{" "}
           </Button>
           <Typography
@@ -384,7 +398,8 @@ const Form = () => {
                 cursor: "pointer",
                 color: palette.primary.light,
               },
-            }}>
+            }}
+          >
             {isLogin
               ? "Don't have an account? Sign Up Here."
               : "Already have an account? Login Here."}

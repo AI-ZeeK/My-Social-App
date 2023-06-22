@@ -15,7 +15,6 @@ function App() {
   const mode = useSelector((state: any) => state.mode);
   const navigate = useNavigate();
   const router = useLocation();
-  console.log(router, 12);
 
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
   const isAuthL = useSelector((state: any) => state.token);

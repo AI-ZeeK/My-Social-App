@@ -68,7 +68,6 @@ export const registerPost: any = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      console.log("rrerere", error);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -220,7 +219,7 @@ const ApiSlice = createSlice({
       state.isError = false;
       state.errorMsg = "";
     },
-    setLogout: (state: {token: never[]}) => {
+    setLogout: (state: any) => {
       state.token = [];
       localStorage.removeItem("token");
       localStorage.removeItem("user");
@@ -290,7 +289,6 @@ const ApiSlice = createSlice({
       .addCase(
         registerPost.pending,
         (state: {isLoading: boolean; isError: boolean}) => {
-          console.log("isPending registerPost");
           state.isLoading = true;
           state.isError = false;
         }
@@ -314,12 +312,6 @@ const ApiSlice = createSlice({
           state.token = payload.token;
           localStorage.setItem("token", JSON.stringify(state.token));
           localStorage.setItem("user", JSON.stringify(state.user));
-          console.log(
-            "isSuccess registerPost",
-            payload,
-            state.token,
-            state.user
-          );
         }
       )
       .addCase(
@@ -328,7 +320,6 @@ const ApiSlice = createSlice({
           state: {isLoading: boolean; isError: boolean; message: any},
           {payload}: any
         ) => {
-          console.log("isRejected jdfvjdfvkfn", payload);
           state.isLoading = false;
           state.isError = true;
 
@@ -342,8 +333,6 @@ const ApiSlice = createSlice({
         (state: {isLoading: boolean; isError: boolean}) => {
           state.isLoading = true;
           state.isError = false;
-
-          console.log("Pending registerPost");
         }
       )
       .addCase(
@@ -353,9 +342,9 @@ const ApiSlice = createSlice({
             isLoading: boolean;
             isError: boolean;
             message: any;
-            token: any;
-            user: any;
             isSuccess: boolean;
+            user: any;
+            token: any;
           },
           {payload}: any
         ) => {
@@ -365,12 +354,6 @@ const ApiSlice = createSlice({
             state.isLoading = false;
             state.isError = true;
             state.message = payload.msg;
-            console.log(
-              "Rejected loginPost",
-              state.token,
-              state.user,
-              payload.msg
-            );
           }
           if (!payload.msg) {
             state.isError = false;
@@ -379,12 +362,6 @@ const ApiSlice = createSlice({
             state.token = payload.token;
             localStorage.setItem("token", JSON.stringify(state.token));
             localStorage.setItem("user", JSON.stringify(state.user));
-            console.log(
-              "isSuccess loginPost",
-              state.token,
-              state.user,
-              payload
-            );
           }
         }
       )
@@ -403,7 +380,6 @@ const ApiSlice = createSlice({
           state.isError = true;
           state.message = payload;
           state.user = [];
-          console.log("isRejected loginPost", payload);
         }
       );
     builder
@@ -411,7 +387,6 @@ const ApiSlice = createSlice({
         socialPost.pending,
         (state: {postState: {isLoading: boolean}}) => {
           state.postState.isLoading = true;
-          console.log("isPending Social Post");
         }
       )
       .addCase(
@@ -426,32 +401,19 @@ const ApiSlice = createSlice({
           state.postState.isLoading = false;
           state.postState.isSuccess = true;
           state.posts = payload;
-          console.log("is Success  Social Post");
         }
       )
-      .addCase(
-        socialPost.rejected,
-        (
-          state: {
-            postState: {isLoading: boolean; isError: boolean};
-            message: any;
-            posts: never[];
-          },
-          action: {payload: any}
-        ) => {
-          state.postState.isLoading = false;
-          state.postState.isError = true;
-          state.message = action.payload;
-          state.posts = [];
-          console.log("isRejected social Post");
-        }
-      );
+      .addCase(socialPost.rejected, (state: any, action: {payload: any}) => {
+        state.postState.isLoading = false;
+        state.postState.isError = true;
+        state.message = action.payload;
+        state.posts = [];
+      });
     builder
       .addCase(
         getSocialPost.pending,
         (state: {postState: {isLoading: boolean}}) => {
           state.postState.isLoading = true;
-          console.log("isPending GET Social Post");
         }
       )
       .addCase(
@@ -466,18 +428,14 @@ const ApiSlice = createSlice({
           state.postState.isLoading = false;
           state.postState.isSuccess = true;
           state.posts = payload;
-          console.log("is Success GETSocial Post", payload);
         }
       )
-      .addCase(getSocialPost.rejected, (state: any, {action}: any) => {
-        console.log("isRejected GET Social Post");
-      });
+      .addCase(getSocialPost.rejected, (state: any, {action}: any) => {});
     builder
       .addCase(
         getUserSocialPosts.pending,
         (state: {postState: {isLoading: boolean}}) => {
           state.postState.isLoading = true;
-          console.log("isPending GET Social Post");
         }
       )
       .addCase(
@@ -492,18 +450,14 @@ const ApiSlice = createSlice({
           state.postState.isLoading = false;
           state.postState.isSuccess = true;
           state.posts = payload;
-          console.log("is Success GETSocialUser Post", payload);
         }
       )
-      .addCase(getUserSocialPosts.rejected, (state: any, {action}: any) => {
-        console.log("isRejected GET SocialUser Post");
-      });
+      .addCase(getUserSocialPosts.rejected, (state: any, {action}: any) => {});
     builder
       .addCase(
         getFriends.pending,
         (state: {friendsState: {isLoading: boolean}}) => {
           state.friendsState.isLoading = true;
-          console.log("isPending GET Friends Post");
         }
       )
       .addCase(
@@ -518,18 +472,14 @@ const ApiSlice = createSlice({
           state.friendsState.isLoading = false;
           state.friendsState.isSuccess = true;
           state.friends = payload;
-          console.log("is Success Friends Post", payload);
         }
       )
-      .addCase(getFriends.rejected, (state: any, {payload}: any) => {
-        console.log("isRejected GET Friends Post");
-      });
+      .addCase(getFriends.rejected, (state: any, {payload}: any) => {});
     builder
       .addCase(
         patchFriend.pending,
         (state: {friendsState: {isLoading: boolean}}) => {
           state.friendsState.isLoading = true;
-          console.log("isPending GET Friends Post");
         }
       )
       .addCase(
@@ -544,18 +494,14 @@ const ApiSlice = createSlice({
           state.friendsState.isLoading = false;
           state.friendsState.isSuccess = true;
           state.friends = payload;
-          console.log("is Success Friends Post", payload);
         }
       )
-      .addCase(patchFriend.rejected, (state: any, {action}: any) => {
-        console.log("isRejected GET Friends Post");
-      });
+      .addCase(patchFriend.rejected, (state: any, {action}: any) => {});
     builder
       .addCase(
         patchLike.pending,
         (state: {friendsState: {isLoading: boolean}}) => {
           state.friendsState.isLoading = true;
-          console.log("isPending Patch Friends Like");
         }
       )
       .addCase(
@@ -570,12 +516,9 @@ const ApiSlice = createSlice({
           state.friendsState.isLoading = false;
           state.friendsState.isSuccess = true;
           state.friends = payload;
-          console.log("is Success Friends Like Patch", payload);
         }
       )
-      .addCase(patchLike.rejected, (state: any, {action}: any) => {
-        console.log("isRejected Patch Friends Like");
-      });
+      .addCase(patchLike.rejected, (state: any, {action}: any) => {});
   },
 });
 

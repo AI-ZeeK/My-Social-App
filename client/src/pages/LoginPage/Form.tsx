@@ -81,23 +81,18 @@ const Form = () => {
         ...xData,
         ["picturePath"]: picturePathBase64,
       }));
-      console.log(userData, values, "new regggs", xData);
 
       userData && (await dispatch(registerPost(userData)));
-    } catch (error) {
-      console.log(error, "new errrorr");
-    }
+    } catch (error) {}
   };
   const login = async (values: initialValueType) => {
     await dispatch(loginPost(values));
   };
   // const handleFormSubmit = async (_values: any, onSubmitProps: any) => {
-  // 	console.log("not really");
   // 	if (isLogin) return await login(values, onSubmitProps);
   // 	if (isRegister) return await register(values, onSubmitProps);
   // };
   const handleSubmit = async () => {
-    console.log("screen", isLogin, isRegister);
     setUserData(formData);
     if (isRegister) await register(values);
     if (isLogin) await login(values);
@@ -114,21 +109,14 @@ const Form = () => {
         reader.onload = async () => {
           let Base64: any = reader.result;
           setPicturePathBase64(Base64);
-
-          console.log("not error: ", picturePathBase64, cool, count);
         };
-        reader.onerror = (error) => {
-          console.log("error: ", error);
-        };
-      } catch (error) {
-        console.log(error);
-      }
+        reader.onerror = (error) => {};
+      } catch (error) {}
     }
   };
   useEffect(() => {
     setUserData(userData);
     setPicturePathBase64(picturePathBase64);
-    console.log("red");
   }, []);
 
   useEffect(() => {

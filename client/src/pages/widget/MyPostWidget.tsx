@@ -21,11 +21,11 @@ import FlexBetween from "../../components/FlexBetween";
 import WidgetWrapper from "../../components/widgets/WidgetWrapper";
 import Dropzone from "react-dropzone";
 import UserImage from "../../components/widgets/UserImageWidget";
-import { useState, useEffect, useMemo, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { socialPost } from "../../state/ApiSlice";
+import {useState, useEffect, useMemo, useCallback} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {socialPost} from "../../state/ApiSlice";
 
-const MyPostWidget = ({ picturePath }: any) => {
+const MyPostWidget = ({picturePath}: any) => {
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
   const [image, setImage]: any = useState(null);
@@ -35,10 +35,10 @@ const MyPostWidget = ({ picturePath }: any) => {
   );
   const [file, setFile] = useState(null);
   const [post, setPost] = useState("");
-  const { palette }: any = useTheme();
-  const { _id } = useSelector((state: any) => state.user);
+  const {palette}: any = useTheme();
+  const {_id} = useSelector((state: any) => state.user);
   const token = useSelector((state: any) => state.token);
-  const { isSuccess } = useSelector((state: any) => state);
+  const {isSuccess} = useSelector((state: any) => state);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
@@ -84,7 +84,6 @@ const MyPostWidget = ({ picturePath }: any) => {
       setPost("");
     }
   };
-  // console.log(picturePathBase64);
   const encodeBase64 = useCallback(() => {
     try {
       if (file) {
@@ -93,12 +92,9 @@ const MyPostWidget = ({ picturePath }: any) => {
         reader.readAsDataURL(file);
         reader.onload = () => {
           Base64 = reader.result;
-          // console.log("not error: ", picturePathBase64);
           setPicturePathBase64(Base64);
         };
-        reader.onerror = (error) => {
-          console.log("error: ", error);
-        };
+        reader.onerror = (error) => {};
       } else {
         setPicturePathBase64(null);
       }
@@ -132,7 +128,8 @@ const MyPostWidget = ({ picturePath }: any) => {
           border={`1px solid ${medium}`}
           borderRadius="5px"
           mt="1rem"
-          p="1rem">
+          p="1rem"
+        >
           <Dropzone
             // acceptedFiles=".jpg,.jpeg,.png"
             multiple={false}
@@ -140,15 +137,17 @@ const MyPostWidget = ({ picturePath }: any) => {
               setFile(acceptedFiles[0]);
               picturePathBase64 && setImage(acceptedFiles[0]);
               // Store result into  your state array
-            }}>
-            {({ getRootProps, getInputProps }) => (
+            }}
+          >
+            {({getRootProps, getInputProps}) => (
               <FlexBetween>
                 <Box
                   {...getRootProps()}
                   border={`2px dashed ${palette.primary.main}`}
                   p="1rem"
                   width="100%"
-                  sx={{ "&:hover": { cursor: "pointer" } }}>
+                  sx={{"&:hover": {cursor: "pointer"}}}
+                >
                   <input {...getInputProps()} />
                   {!image ? (
                     <p>Add Image Here</p>
@@ -162,7 +161,8 @@ const MyPostWidget = ({ picturePath }: any) => {
                 {image && (
                   <IconButton
                     onClick={() => setImage(null)}
-                    sx={{ width: "15%" }}>
+                    sx={{width: "15%"}}
+                  >
                     <DeleteOutlined />
                   </IconButton>
                 )}
@@ -172,14 +172,15 @@ const MyPostWidget = ({ picturePath }: any) => {
         </Box>
       )}
 
-      <Divider sx={{ margin: "1.25rem 0" }} />
+      <Divider sx={{margin: "1.25rem 0"}} />
 
       <FlexBetween>
         <FlexBetween gap="0.25rem" onClick={() => setIsImage(!isImage)}>
-          <ImageOutlined sx={{ color: mediumMain }} />
+          <ImageOutlined sx={{color: mediumMain}} />
           <Typography
             color={mediumMain}
-            sx={{ "&:hover": { cursor: "pointer", color: medium } }}>
+            sx={{"&:hover": {cursor: "pointer", color: medium}}}
+          >
             Image
           </Typography>
         </FlexBetween>
@@ -187,23 +188,23 @@ const MyPostWidget = ({ picturePath }: any) => {
         {isNonMobileScreens ? (
           <>
             <FlexBetween gap="0.25rem">
-              <GifBoxOutlined sx={{ color: mediumMain }} />
+              <GifBoxOutlined sx={{color: mediumMain}} />
               <Typography color={mediumMain}>Clip</Typography>
             </FlexBetween>
 
             <FlexBetween gap="0.25rem">
-              <AttachFileOutlined sx={{ color: mediumMain }} />
+              <AttachFileOutlined sx={{color: mediumMain}} />
               <Typography color={mediumMain}>Attachment</Typography>
             </FlexBetween>
 
             <FlexBetween gap="0.25rem">
-              <MicOutlined sx={{ color: mediumMain }} />
+              <MicOutlined sx={{color: mediumMain}} />
               <Typography color={mediumMain}>Audio</Typography>
             </FlexBetween>
           </>
         ) : (
           <FlexBetween gap="0.25rem">
-            <MoreHorizOutlined sx={{ color: mediumMain }} />
+            <MoreHorizOutlined sx={{color: mediumMain}} />
           </FlexBetween>
         )}
 
@@ -214,7 +215,8 @@ const MyPostWidget = ({ picturePath }: any) => {
             color: palette.background.alt,
             backgroundColor: palette.primary.main,
             borderRadius: "3rem",
-          }}>
+          }}
+        >
           POST
         </Button>
       </FlexBetween>

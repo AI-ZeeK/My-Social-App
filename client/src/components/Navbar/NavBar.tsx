@@ -22,17 +22,17 @@ import {
   Close,
 } from "@mui/icons-material";
 
-import { useDispatch, useSelector } from "react-redux";
-import { setMode, setLogout } from "../../state/ApiSlice";
-import { useNavigate } from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {setMode, setLogout} from "../../state/ApiSlice";
+import {useNavigate} from "react-router-dom";
 import FlexBetween from "../FlexBetween";
-import { useState, useEffect } from "react";
+import {useState, useEffect} from "react";
 type Props = {};
 const NavBar = (props: Props) => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useSelector((state: any) => state);
+  const {user} = useSelector((state: any) => state);
   const isNonMobileScreens = useMediaQuery("(min-width : 1000px)");
   const theme: any = useTheme();
   const neutralLight = theme.palette.neutral.light;
@@ -43,7 +43,6 @@ const NavBar = (props: Props) => {
   // let fullName;
 
   const fullName = `${user.firstName} ${user.lastName}`;
-  // console.log(user)
 
   return (
     <FlexBetween padding="1rem 6%" bgcolor={alt}>
@@ -53,7 +52,8 @@ const NavBar = (props: Props) => {
           fontSize="clamp(1rem, 2rem,2.25rem)"
           color="primary"
           onClick={() => navigate("/home")}
-          sx={{ "&:hover": { color: primaryLight, cursor: "pointer" } }}>
+          sx={{"&:hover": {color: primaryLight, cursor: "pointer"}}}
+        >
           Sociopedia
         </Typography>
         {isNonMobileScreens && (
@@ -61,7 +61,8 @@ const NavBar = (props: Props) => {
             bgcolor={neutralLight}
             borderRadius="9px"
             gap="3rem"
-            padding="0.1rem 1.5rem">
+            padding="0.1rem 1.5rem"
+          >
             <InputBase placeholder="Search..." />
             <IconButton>
               <Search />
@@ -73,14 +74,14 @@ const NavBar = (props: Props) => {
           <FlexBetween gap="2rem">
             <IconButton onClick={() => dispatch(setMode())}>
               {theme.palette.mode === "dark" ? (
-                <DarkMode sx={{ fontSize: "25px" }} />
+                <DarkMode sx={{fontSize: "25px"}} />
               ) : (
-                <LightMode sx={{ fontSize: "25px" }} />
+                <LightMode sx={{fontSize: "25px"}} />
               )}
             </IconButton>
-            <Message sx={{ fontSize: "25px" }} />
-            <Notifications sx={{ fontSize: "25px" }} />
-            <Help sx={{ fontSize: "25px" }} />
+            <Message sx={{fontSize: "25px"}} />
+            <Notifications sx={{fontSize: "25px"}} />
+            <Help sx={{fontSize: "25px"}} />
             <FormControl component="div" variant="standard">
               <Select
                 value={fullName}
@@ -97,13 +98,15 @@ const NavBar = (props: Props) => {
                     backgroundColor: neutralLight,
                   },
                 }}
-                input={<InputBase />}>
+                input={<InputBase />}
+              >
                 <MenuItem value={fullName}>
                   <Typography>{fullName}</Typography>
                 </MenuItem>
                 <MenuItem
                   onClick={() => dispatch(setLogout())}
-                  value={fullName}>
+                  value={fullName}
+                >
                   Log Out
                 </MenuItem>
               </Select>
@@ -111,7 +114,8 @@ const NavBar = (props: Props) => {
           </FlexBetween>
         ) : (
           <IconButton
-            onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}>
+            onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}
+          >
             <Menu />
           </IconButton>
         )}
@@ -125,11 +129,13 @@ const NavBar = (props: Props) => {
             zIndex={10}
             maxWidth="500px"
             minWidth="300px"
-            bgcolor={background}>
+            bgcolor={background}
+          >
             {/* {Close Icons} */}
             <Box display="flex" justifyContent="flex-end" p="1rem">
               <IconButton
-                onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}>
+                onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}
+              >
                 <Close />
               </IconButton>
             </Box>
@@ -139,19 +145,21 @@ const NavBar = (props: Props) => {
               flexDirection={"column"}
               justifyContent={"center"}
               alignItems={"center"}
-              gap={"3rem"}>
+              gap={"3rem"}
+            >
               <IconButton
                 onClick={() => dispatch(setMode())}
-                sx={{ fontSize: "25px" }}>
+                sx={{fontSize: "25px"}}
+              >
                 {theme.palette.mode === "dark" ? (
-                  <DarkMode sx={{ fontSize: "25px" }} />
+                  <DarkMode sx={{fontSize: "25px"}} />
                 ) : (
-                  <LightMode sx={{ fontSize: "25px" }} />
+                  <LightMode sx={{fontSize: "25px"}} />
                 )}
               </IconButton>
-              <Message sx={{ fontSize: "25px" }} />
-              <Notifications sx={{ fontSize: "25px" }} />
-              <Help sx={{ fontSize: "25px" }} />
+              <Message sx={{fontSize: "25px"}} />
+              <Notifications sx={{fontSize: "25px"}} />
+              <Help sx={{fontSize: "25px"}} />
               <FormControl component="div" variant="standard">
                 <Select
                   value={fullName}
@@ -168,7 +176,8 @@ const NavBar = (props: Props) => {
                       backgroundColor: neutralLight,
                     },
                   }}
-                  input={<InputBase />}>
+                  input={<InputBase />}
+                >
                   <MenuItem value={fullName}>
                     <Typography>{fullName}</Typography>
                   </MenuItem>
@@ -177,7 +186,8 @@ const NavBar = (props: Props) => {
                       dispatch(setLogout());
                       navigate("/");
                     }}
-                    value={fullName}>
+                    value={fullName}
+                  >
                     Log Out
                   </MenuItem>
                 </Select>

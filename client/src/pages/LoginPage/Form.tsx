@@ -72,18 +72,22 @@ const Form = () => {
 
   const register = async (values: any) => {
     try {
-      const formData = new FormData();
-      const xData = await Object.assign(formData, {
-        ...values,
-      });
-      setUserData((prev: initialValueType) => ({
-        ...prev,
-        ...xData,
-        ["picturePath"]: picturePathBase64,
-      }));
+      console.log(formData, 1);
 
-      userData && (await dispatch(registerPost(userData)));
-    } catch (error) {}
+      const base64String = await encodeBase64(picturePath);
+      console.log(formData, 2);
+      setFormData((prev) => {
+        return {...prev, ...values, picturePath: base64String};
+      });
+      console.log(formData, 3);
+
+      //   setUserData((prev: initialValueType) => {
+      //     return {...prev, ...formData, ["picturePath"]: base64String};
+      //   });
+      //   userData && (await dispatch(registerPost(userData)));
+    } catch (error) {
+      console.log(error);
+    }
   };
   const login = async (values: initialValueType) => {
     await dispatch(loginPost(values));
@@ -92,27 +96,32 @@ const Form = () => {
   // 	if (isLogin) return await login(values, onSubmitProps);
   // 	if (isRegister) return await register(values, onSubmitProps);
   // };
-  const handleSubmit = async () => {
-    setUserData(formData);
-    if (isRegister) await register(values);
-    if (isLogin) await login(values);
+  const handleSubmit = () => {
+    // setUserData(formData);
+    if (isRegister) register(values);
+    if (isLogin) login(values);
   };
   const handleChange = (e: {target: {name: string; value: string}}) => {
     setFormData((prev) => ({...prev, [e.target.name]: e.target.value}));
   };
 
   const encodeBase64 = (file: Blob) => {
-    let reader = new FileReader();
-    if (file) {
-      reader.readAsDataURL(file);
-      try {
+    return new Promise<string>((resolve, reject) => {
+      let reader = new FileReader();
+      if (file) {
+        reader.readAsDataURL(file);
+
         reader.onload = async () => {
-          let Base64: any = reader.result;
-          setPicturePathBase64(Base64);
+          let base64String = reader.result as string;
+          resolve(base64String);
         };
-        reader.onerror = (error) => {};
-      } catch (error) {}
-    }
+        reader.onerror = (error) => {
+          reject(error);
+        };
+      } else {
+        reject(new Error("No file provided."));
+      }
+    });
   };
   useEffect(() => {
     setUserData(userData);
@@ -307,8 +316,7 @@ const Form = () => {
                 <Dropzone
                   // acceptedFiles={".jpeg, .jpg, .png"}
                   onDrop={(acceptedFiles: any) => {
-                    encodeBase64(acceptedFiles[0]);
-                    picturePathBase64 && setPicturePath(acceptedFiles[0]);
+                    setPicturePath(acceptedFiles[0]);
                     // setFieldValue("picture", acceptedFiles[0])
                   }}
                   multiple={false}
